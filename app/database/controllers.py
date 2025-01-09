@@ -6,14 +6,22 @@ DATE:          17/12/2019
 INSTITUTION:   University of Manchester (FBMH)
 DESCRIPTION:   Contains the Database class that contains all the methods used for accessing the database
 """
-
+from sqlalchemy import distinct
 from sqlalchemy.sql import func
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 from app import db
 from app.database.models import PrescribingData, PracticeData
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
+@database.route('/total_gp_practices', methods=['GET'])
+def get_total_gp_practices():
+    """API endpoint to fetch total number of GP practices."""
+    db_instance = Database()
+    total_practices = db_instance.get_total_gp_practices()
+    return jsonify({"total_gp_practices": total_practices})
+
+
 
 class Database:
     """Class for managing database queries."""
@@ -40,3 +48,8 @@ class Database:
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
+
+    def get_total_gp_practices(self):
+        """Return the total number of unique GP practices."""
+        total_practices = db.session.execute(func.count((PracticeData.practice_code))).scalar()
+        return (total_practices)
