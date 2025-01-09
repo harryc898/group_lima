@@ -22,21 +22,28 @@ class Database:
         """Helper function to convert results from tuple list to plain list."""
         order_row = [tuple(row) for row in tuple_list]
         return  [item for i in order_row for item in i]
-    
+
+    #Already there: Total number of items for tile 1
     def get_total_number_items(self):
         """Return the total number of prescribed items."""
         return int(db.session.execute(db.select(func.sum(PrescribingData.items))).first()[0])
-            
+
+    #Already there: Prescribed items per PCT for graph 1
     def get_prescribed_items_per_pct(self):
         """Return the total items per PCT."""
         result = db.session.execute(db.select(func.sum(PrescribingData.items).label('item_sum')).group_by(PrescribingData.PCT)).all()
         return self.convert_tuple_list_to_raw(result)
 
+    #Already there: BNF data per PCT table
     def get_distinct_pcts(self):
         """Return the distinct PCT codes."""
         result = db.session.execute(db.select(PrescribingData.PCT).distinct()).all()
         return self.convert_tuple_list_to_raw(result)
-
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
+
+    #Sprint 1: Total ACT cost tile
+    def get_total_act_cost(self):
+        """Return the total ACT cost."""
+        return (db.session.execute(db.select(func.sum(PrescribingData.ACT_cost * PrescribingData.quantity)))).first()[0]

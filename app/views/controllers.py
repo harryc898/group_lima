@@ -45,12 +45,13 @@ def home():
     return render_template('dashboard/index.html',dashboard_data=dashboard_data)
 
 def generate_data_for_tiles():
-    """Generate the data for the four home page tiles."""
+    """Generate the data for the home page tiles."""
     tile_data = {
         "total_items": db_mod.get_total_number_items(),
         "avg_act_cost": None,
         "top_px_item": None,
-        "num_unique_items": None
+        "num_unique_items": None,
+        "total_act_cost": "{:,.2f}".format(db_mod.get_total_act_cost())
     }
     return tile_data
 
