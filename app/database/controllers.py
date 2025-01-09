@@ -46,4 +46,4 @@ class Database:
     #Sprint 1: Total ACT cost tile
     def get_total_act_cost(self):
         """Return the total ACT cost."""
-        return (db.session.execute(db.select(func.sum(PrescribingData.ACT_cost * PrescribingData.quantity)))).first()[0]
+        return (db.session.execute(db.select(func.sum(PrescribingData.ACT_cost)))).first()[0]
