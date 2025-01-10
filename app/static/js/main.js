@@ -14,3 +14,15 @@ function initializeMain()
 {
     popup = Popup();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/dbutils/total_gp_practices')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('gp-practices').innerText = data.total_gp_practices;
+        })
+        .catch(error => {
+            console.error('Error fetching GP practices data:', error);
+            document.getElementById('gp-practices').innerText = "Error";
+        });
+});

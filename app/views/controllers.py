@@ -48,6 +48,7 @@ def generate_data_for_tiles():
     """Generate the data for the home page tiles."""
     tile_data = {
         "total_items": db_mod.get_total_number_items(),
+        "total_gp_practices": db_mod.get_total_gp_practices(),
         "avg_act_cost": None,
         "top_px_item": None,
         "num_unique_items": None,
