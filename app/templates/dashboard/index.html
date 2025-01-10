@@ -136,124 +136,123 @@
             </div>
 
             <!-- Content Row -->
-            <div class="row">
+<div class="row">
+  <!-- Total items tile -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total items:</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_items }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-pills fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-              <!-- Total items tile -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total items:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_items }}</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-pills fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
+  <!-- Total GP Practices Tile -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total GP Practices</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_gp_practices }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-hospital fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mean ACT cost tile -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average ACT cost:</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">£</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top prescribed items tile -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOP PRESCRIBED ITEM:</div>
+            <span class="text_col_black"></span>
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto">
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">%</div>
+              </div>
+              <div class="col">
+                <div class="progress progress-sm mr-2">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
-
-              <!-- Total GP Practices Tile -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total GP Practices</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800" >{{ dashboard_data.tile_data_items.total_gp_practices}}</div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-hospital fa-2x text-gray-300"></i>
-                </div>
             </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- Second Row -->
+<div class="row">
+  <!-- Unique items tile -->
+  <div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">NUMBER OF UNIQUE ITEMS:</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-              <!-- Mean ACT cost tile -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average ACT cost:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">£</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <!-- Total ACT cost tile -->
+  <div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL ACT COST:</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">£{{ dashboard_data.tile_data_items.total_act_cost }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-              <!-- Top prescribed items tile -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOP PRESCRIBED ITEM:</div>
-                        <span class="text_col_black"></span>
-                        <div class="row no-gutters align-items-center">
-                          <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">%</div>
-                          </div>
-                          <div class="col">
-                            <div class="progress progress-sm mr-2">
-                              <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Unique items tile -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">NUMBER OF UNIQUE ITEMS:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-
-              <!-- Total ACT cost tile -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL ACT COST:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">£{{ dashboard_data.tile_data_items.total_act_cost }}</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
             <!-- Content Row -->
             <div class="row">
