@@ -25,6 +25,7 @@
     <!-- Custom scripts for the dashboard -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/calculators.js') }}"></script>
 
 
@@ -146,7 +147,7 @@
 
             <!-- Content Row -->
 <div class="row">
-  <!-- Total items tile -->
+  <!-- Already there: Total items tile -->
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -163,7 +164,7 @@
     </div>
   </div>
 
-  <!-- Total GP Practices Tile -->
+  <!-- Sprint 1: Total GP Practices Tile -->
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -180,7 +181,7 @@
     </div>
   </div>
 
-  <!-- Mean ACT cost tile -->
+  <!-- Already there and not yet completed: Mean ACT cost tile -->
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -197,7 +198,7 @@
     </div>
   </div>
 
-  <!-- Top prescribed items tile -->
+  <!-- Already there and not yet competed: Top prescribed items tile -->
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -227,7 +228,7 @@
 
 <!-- Second Row -->
 <div class="row">
-  <!-- Unique items tile -->
+  <!-- Already there and not yet completed: Unique items tile -->
   <div class="col-xl-6 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -244,7 +245,7 @@
     </div>
   </div>
 
-  <!-- Total ACT cost tile -->
+  <!-- Sprint 1: Total ACT cost tile -->
   <div class="col-xl-6 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
@@ -263,9 +264,10 @@
 </div>
 
 
-            <!-- Content Row -->
+            <!-- Content Row and Column-->
             <div class="row">
-              <div class="col-xl-6 col-lg-7">
+              <div class="col-xl-6 col-md-6 mb-4">
+              <!-- Already there: Graph plotting total items in each PCT -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">{{dashboard_data.top_items_plot_data.header}}</h6>
@@ -276,19 +278,19 @@
                   </div>
                 </div>
               </div>
-                <!-- Content Column -->
-              <div class="col-xl-6">
 
-                <!-- Infection treatment drugs -->
-                <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
-                  </div>
-                  <div class="card-body">
+              <!-- Content column -->
+                <div class="col-xl-6 col-md-6 mb-4">
+              <!-- Already there and not completed: Infection treatment drugs -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
+                    </div>
+                    <div class="card-body">
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
             <div class="row">
                 <div class="col-xl-6 col-lg-7">
@@ -304,20 +306,21 @@
                 </div>
             </div>
 
-            <!-- Content Row -->
-            <div class="row last-row">
-
-              <div class="col-xl-6">
-                <!-- Show the BNF data for slected PCT -->
+            <!-- Content Row and Column-->
+            <div class="row">
+              <div class="col-xl-6 col-md-6 mb-4">
+              <!-- Already there: Table showing BNF data for a selected PCT -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">BNF data per PCT</h6>
                   </div>
                   <div class="card-body">
-                      <form method='POST' action="{{ url_for('dashboard.home') }}">
-                        <select class="custom-select" id="input-group-select" name="pct-option">
+                      <form method="POST" action="{{ url_for('dashboard.home') }}">
+                        <select class="custom-select" id="pct-select" name="pct-option">
                           {% for item in dashboard_data.pct_list %}
-                          <option name="option-list" value="{{ item }}">{{ item }}</option>
+                            <option value="{{ item }}" {% if item == dashboard_data.selected_pct %}selected{% endif %}>
+                              {{ item }}
+                            </option>
                           {% endfor %}
                         </select>
                         <input type="submit" value="Update" class="btn btn-outline-secondary" />
@@ -344,9 +347,53 @@
                     </div>
                   </div>
                 </div>
+
+
+                <!-- Content Column -->
+              <div class="col-xl-6 col-lg-12">
+
+            <!-- Sprint 2, Task 30: Table of top five most prescribed antidepressants for selected practice -->
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Top 5 most prescribed antidepressant drugs in each practice</h6>
+                  </div>
+                  <div class="card-body">
+                      <form method="POST" action="{{ url_for('dashboard.home') }}">
+                        <select class="custom-select" id="practice-select" name="practice-option">
+                          {% for item in dashboard_data.practice_list %}
+                            <option value="{{ item }}" {% if item == dashboard_data.selected_practice %}selected{% endif %}>
+                              {{ item }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <!-- Add hidden field to preserve PCT selection -->
+                        <input type="hidden" name="pct-option" value="{{ dashboard_data.selected_pct }}">
+                        <input type="submit" value="Update" class="btn btn-outline-secondary" />
+                      </form>
+                      <hr />
+                      <table class="table">
+                      <thead>
+                        <td>Practice</td>
+                        <td>BNF code</td>
+                        <td>BNF name</td>
+                        <td>Quantity</td>
+                      </thead>
+                        <tbody>
+                        {% for row in dashboard_data.practice_data %}
+                          <tr>
+                            <td>{{ row.practice }}</td>
+                            <td>{{ row.BNF_code }}</td>
+                            <td>{{ row.BNF_name }}</td>
+                            <td>{{ row.quantity }}</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+
           
             <!-- Creatinine clearance calculator -->
             <div id="creat-calc">

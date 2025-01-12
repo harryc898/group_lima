@@ -25,20 +25,32 @@ db_mod = Database()
 def home():
     """Render the home page of the dashboard passing in data to populate dashboard."""
     pcts = db_mod.get_distinct_pcts()
+    practices = db_mod.get_distinct_practices()
     if request.method == 'POST':
-        # if selecting PCT for table, update based on user choice
         form = request.form
-        selected_pct_data = db_mod.get_n_data_for_PCT(str(form['pct-option']), 5)
+        # Preserve the current selections from the form
+        selected_pct = form.get('pct-option', pcts[0])
+        selected_practice = form.get('practice-option', practices[0])
     else:
-        # pick a default PCT to show
-        selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
-
+        # Default selections
+        selected_pct = pcts[0]
+        selected_practice = practices[0]
+    # Fetch data based on selections
+    selected_pct_data = db_mod.get_n_data_for_PCT(selected_pct, 5)
+    selected_practice_data = db_mod.get_antidepressant_data_for_practice(selected_practice, 5)
     # prepare data structure to send to front end to update display
     dashboard_data = {    
-        "tile_data_items": generate_data_for_tiles(),  
+        #Tiles
+        "tile_data_items": generate_data_for_tiles(),
+        #Graph already on dashboard for PCT items
         "top_items_plot_data": generate_top_px_items_barchart_data(),
+        #pct/practice list, data and selected cells
         "pct_list": pcts,
+        "practice_list": practices,
         "pct_data": selected_pct_data,
+        "practice_data": selected_practice_data,
+        "selected_pct": selected_pct,
+        "selected_practice": selected_practice,
     }
     
     # render the HTML page passing in relevant data
