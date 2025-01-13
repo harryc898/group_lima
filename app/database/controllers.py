@@ -6,8 +6,7 @@ DATE:          17/12/2019
 INSTITUTION:   University of Manchester (FBMH)
 DESCRIPTION:   Contains the Database class that contains all the methods used for accessing the database
 """
-from sqlalchemy import distinct
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, text
 from flask import Blueprint, jsonify
 
 from app import db
@@ -41,6 +40,32 @@ class Database:
         """Return the total items per PCT."""
         result = db.session.execute(db.select(func.sum(PrescribingData.items).label('item_sum')).group_by(PrescribingData.PCT)).all()
         return self.convert_tuple_list_to_raw(result)
+
+    def get_prescribed_items_per_gp_practice(self):
+        """Return the top 10 GP Practices by total prescribed items with breakdown."""
+        # Query for the top 10 practices based on total items prescribed
+        result = db.session.query(
+            PrescribingData.practice,
+            func.sum(PrescribingData.items).label('total_items')
+        ).group_by(PrescribingData.practice).order_by(func.sum(PrescribingData.items).desc()).limit(10).all()
+
+        # Fetch the breakdown of the most prescribed items for each top practice
+        breakdown = []
+        for practice, _ in result:
+            most_prescribed = db.session.query(
+                PrescribingData.BNF_name,
+                func.sum(PrescribingData.items).label('item_count')
+            ).filter(PrescribingData.practice == practice).group_by(PrescribingData.BNF_name).order_by(
+                func.sum(PrescribingData.items).desc()).all()
+            breakdown.append({
+                'practice': practice,
+                'items': most_prescribed
+            })
+
+        return {
+            'top_practices': result,
+            'breakdown': breakdown
+        }
 
     #Already there: BNF data per PCT table
     def get_distinct_pcts(self):

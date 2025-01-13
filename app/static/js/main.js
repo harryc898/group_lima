@@ -25,4 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error fetching GP practices data:', error);
             document.getElementById('gp-practices').innerText = "Error";
         });
+
+    // Fetch the Top GP Practices chart data
+    fetch('/dashboard/top_practices_chart_data')
+        .then(response => response.json())
+        .then(data => {
+            Plotly.newPlot('top-practices-chart', JSON.parse(data.graphJSON));
+        })
+        .catch(error => {
+            console.error('Error loading chart data:', error);
+        });
 });
