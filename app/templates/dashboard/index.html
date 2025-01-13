@@ -36,6 +36,13 @@
               var graphs = {{ dashboard_data.top_items_plot_data.graphJSON | safe }};
               Plotly.plot('chart',graphs,{});    
           });
+
+          // Run JavaScript functions when page ready
+          $(document).ready(function () {
+              initializeMain();
+              var graphs = {{ dashboard_data.top_items_plot_data.graphJSON | safe }};
+              Plotly.plot('chart2',graphs,{});
+          });
     </script>
   </head>
 
@@ -276,6 +283,21 @@
                     <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
                   </div>
                   <div class="card-body">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+              <div class="col-xl-6 col-lg-7">
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">{{dashboard_data.top_items_plot_data.header}} 456</h6>
+                  </div>
+                  <div class="card-body">
+                    <div id="chart2" class="chart"></div>
+                    <p>{{dashboard_data.top_items_plot_data.description}}</p>
                   </div>
                 </div>
               </div>
