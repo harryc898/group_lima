@@ -37,7 +37,7 @@ def home():
         selected_practice = practices[0]
     # Fetch data based on selections
     selected_pct_data = db_mod.get_n_data_for_PCT(selected_pct, 5)
-    selected_practice_data = db_mod.get_antidepressant_data_for_practice(selected_practice, 5)
+    selected_practice_data = db_mod.get_top_antidepressants_per_practice(selected_practice, 5)
     # prepare data structure to send to front end to update display
     dashboard_data = {    
         #Tiles
@@ -51,6 +51,8 @@ def home():
         "practice_data": selected_practice_data,
         "selected_pct": selected_pct,
         "selected_practice": selected_practice,
+        #Graph for top 5 antidepressant drugs prescribed
+        "top_antidepressant_quantity_plot_data": generate_antidepressant_barchart_data(selected_practice=selected_practice),
     }
     
     # render the HTML page passing in relevant data
@@ -149,3 +151,51 @@ def generate_top_practices_barchart_data():
         'header': "Top 10 GP Practices by Prescribed Items",
         'description': "Bar chart of the top 10 GP practices by the total number of prescribed items. Hover over a bar to see the most prescribed item for each practice."
     }
+
+
+
+
+def generate_antidepressant_barchart_data(selected_practice=None):
+    """Generate the data needed to populate the top 5 antidepressants prescribed in each practice barchart."""
+    # Fetch all data
+    db_mod = Database()
+    raw_data = db_mod.get_top_antidepressants_per_practice(selected_practice=selected_practice)
+    # Organize data by practice
+    practices = {}
+    for row in raw_data:
+        practice = row[0]  # Adjust index for practice
+        if practice not in practices:
+            practices[practice] = []
+        practices[practice].append({"BNF_code": row[1], "quantity": row[3]})
+    # Default to the first practice if none is selected
+        # Handle cases where no practice is selected or the selected practice has no data
+        if not selected_practice:
+            selected_practice = list(practices.keys())[0]  # Default to the first practice
+        if selected_practice not in practices or not practices[selected_practice]:
+            # Return a placeholder response if no data is available for the selected practice
+            return {
+                'graphJSON': None,
+                'header': f"No data available for {selected_practice}",
+                'description': "Try selecting a different practice.",
+                'practice_list': list(practices.keys()),
+                'selected_practice': selected_practice,
+            }
+    # Prepare the DataFrame for the selected practice
+    df = pd.DataFrame(practices[selected_practice])
+    # Generate the bar chart
+    fig = px.bar(df, x="BNF_code", y="quantity",
+                 labels={"BNF_code": "BNF code",
+                         "quantity": "Quantity prescribed (number)"}).update_xaxes(categoryorder="sum descending")
+    # Convert the plot for rendering and add metadata
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    header = f"Top antidepressants prescribed in practice: {selected_practice}"
+    description = "INSERT DESCRIPTION HERE (views/controllers.py)"
+    plot_data = {
+        'graphJSON': graphJSON,
+        'header': header,
+        'description': description,
+        'practice_list': list(practices.keys()),  # All practices for dropdown
+        'selected_practice': selected_practice   # Currently selected practice
+    }
+    return plot_data
+
