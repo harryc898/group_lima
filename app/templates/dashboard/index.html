@@ -36,6 +36,13 @@
               var graphs = {{ dashboard_data.top_items_plot_data.graphJSON | safe }};
               Plotly.plot('chart',graphs,{});    
           });
+
+          // Run JavaScript functions when page ready
+          $(document).ready(function () {
+              initializeMain();
+              var graphs = {{ dashboard_data.top_items_plot_data.graphJSON | safe }};
+              Plotly.plot('chart2',graphs,{});
+          });
     </script>
   </head>
 
@@ -279,6 +286,20 @@
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Top 10 GP Practices by Prescribed Items</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="top-practices-chart" class="chart"></div>
+                            <p>A visualization of the top 10 GP practices by total prescribed items, including breakdowns.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Content Row -->

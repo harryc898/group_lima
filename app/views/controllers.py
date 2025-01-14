@@ -38,11 +38,18 @@ def home():
         "tile_data_items": generate_data_for_tiles(),  
         "top_items_plot_data": generate_top_px_items_barchart_data(),
         "pct_list": pcts,
-        "pct_data": selected_pct_data
+        "pct_data": selected_pct_data,
     }
     
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html',dashboard_data=dashboard_data)
+
+@views.route('/top_practices_chart_data', methods=['GET'])
+def top_practices_chart_data():
+    """API endpoint to fetch top GP practices chart data."""
+    chart_data = generate_top_practices_barchart_data()
+    return jsonify(chart_data)
+
 
 def generate_data_for_tiles():
     """Generate the data for the home page tiles."""
@@ -80,3 +87,53 @@ def generate_top_px_items_barchart_data():
     }
     return plot_data
 
+def generate_top_practices_barchart_data():
+    """Generate data for the top 10 GP practices chart with total items and tooltip showing the most prescribed item."""
+    # Fetch the data from the database method
+    data = db_mod.get_prescribed_items_per_gp_practice()
+
+    # Extract practices, total items, and most prescribed items for the chart
+    practices = []
+    total_items = []
+    most_prescribed_items = []
+    for practice_breakdown in data['breakdown']:
+        practices.append(practice_breakdown['practice'])
+        # Get total items for the practice (already provided in 'top_practices')
+        total_items.append(next(item[1] for item in data['top_practices'] if item[0] == practice_breakdown['practice']))
+        # Get the most prescribed item for each practice
+        most_prescribed = max(practice_breakdown['items'], key=lambda x: x[1])  # Sort by item count
+        most_prescribed_items.append(f"{most_prescribed[0]} ({most_prescribed[1]})")
+
+    # Create a DataFrame for Plotly
+    df = pd.DataFrame({
+        "practice": practices,
+        "total_items": total_items,
+        "most_prescribed_item": most_prescribed_items
+    })
+
+    # Generate the Plotly bar chart
+    fig = px.bar(
+        df,
+        x="practice",
+        y="total_items",
+        labels={"practice": "GP Practice", "total_items": "Total Prescribed Items"}
+    ).update_xaxes(categoryorder="total descending")
+
+    # Customize hover template
+    fig.update_traces(
+        hovertemplate=(
+            "<b>GP Practice:</b> %{x}<br>" +
+            "<b>Total Prescribed Items:</b> %{y}<br>" +
+            "<b>Most Prescribed Item:</b> %{customdata}<extra></extra>"
+        ),
+        customdata=df['most_prescribed_item']  # Add the most prescribed item to the hover tooltip
+    )
+
+    # Convert the plot for rendering
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return {
+        'graphJSON': graphJSON,
+        'header': "Top 10 GP Practices by Prescribed Items",
+        'description': "Bar chart of the top 10 GP practices by the total number of prescribed items. Hover over a bar to see the most prescribed item for each practice."
+    }
