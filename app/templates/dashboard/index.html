@@ -358,24 +358,26 @@
                     <p>Sex of patient:</p>
                     <div>
                       <label class="radio-inline">
-                        <input type="radio" name="sex" value="m"> Male
+                        <input type="radio" name="sex" value="m" id="sex" > Male
                       </label>
                       <label class="radio-inline">
-                        <input type="radio" name="sex" value="f"> Female
+                        <input type="radio" name="sex" value="f" id="sex" > Female
                       </label>
                       <p>Age of patient (years):</p>
-                      <input type="number" min="1" max="120" name="patients-age" />
+                      <input type="number" min="1" max="120" name="patients-age" id="patients-age" />
                       <br /><br />
                       <p>Weight of patient (kg):</p>
-                      <input type="number" min="1" max="120" name="patients-weight" />
+                      <input type="number" min="1" max="120" name="patients-weight" id="patients-weight" />
                       <br /><br />
                       <p>Serum creatinine (micromol/L):</p>
-                      <input type="number" min="1" max="120" name="patients-serum" />
+                      <input type="number" min="1" max="120" name="patients-serum" id="patients-serum" />
                       <br />
+                        <div id="result" ></div>
                     </div>
+
                     <br />
                     <hr />
-                    <button type="button" class="btn btn-primary">Calculate</button>
+                    <button type="button" class="btn btn-primary" onclick="calculateCreatinineClearance()">Calculate</button>
                     <button type="button" class="btn btn-danger" onclick="popup.hideCeatCalcFormPopup();">Close</button>
                   </div>
                 </div>
