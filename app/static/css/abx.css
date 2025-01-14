@@ -33,6 +33,20 @@
     z-index:9999;
 }
 
+#creat-calc-left-column{
+    float: left;
+    width: 50%;
+}
+
+#creat-calc-right-column{
+    float: right;
+    width: 50%;
+}
+
+#result{
+    font-size: x-large;
+}
+
 #about-box{
     position:absolute;
     top:2%;
