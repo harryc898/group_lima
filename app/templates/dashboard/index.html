@@ -355,30 +355,34 @@
                     <h6 class="m-0 font-weight-bold text-primary">Creatinine clearance calculator</h6>
                   </div>
                   <div class="card-body">
-                    <p>Sex of patient:</p>
-                    <div>
-                      <label class="radio-inline">
-                        <input type="radio" name="sex" value="m" id="sex" > Male
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="sex" value="f" id="sex" > Female
-                      </label>
-                      <p>Age of patient (years):</p>
-                      <input type="number" min="1" max="120" name="patients-age" id="patients-age" />
-                      <br /><br />
-                      <p>Weight of patient (kg):</p>
-                      <input type="number" min="1" max="120" name="patients-weight" id="patients-weight" />
-                      <br /><br />
-                      <p>Serum creatinine (micromol/L):</p>
-                      <input type="number" min="1" max="120" name="patients-serum" id="patients-serum" />
-                      <br />
-                        <div id="result" ></div>
-                    </div>
-
+                      <div id="creat-calc-left-column">
+                          <p>Sex of patient:</p>
+                            <div>
+                              <label class="radio-inline">
+                                <input type="radio" name="sex" value="m" id="sex" > Male
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" name="sex" value="f" id="sex" > Female
+                              </label>
+                              <p>Age of patient (years):</p>
+                              <input type="number" min="1" max="120" name="patients-age" id="patients-age" />
+                              <br /><br />
+                              <p>Weight of patient (kg):</p>
+                              <input type="number" min="1" max="120" name="patients-weight" id="patients-weight" />
+                              <br /><br />
+                              <p>Serum creatinine (micromol/L):</p>
+                              <input type="number" min="1" max="120" name="patients-serum" id="patients-serum" />
+                              <br />
+                            </div>
                     <br />
                     <hr />
                     <button type="button" class="btn btn-primary" onclick="calculateCreatinineClearance()">Calculate</button>
                     <button type="button" class="btn btn-danger" onclick="popup.hideCeatCalcFormPopup();">Close</button>
+                      </div>
+                      <div id="#creat-calc-right-column">
+                          <div id="result" ></div>
+                      </div>
+
                   </div>
                 </div>
             </div>
