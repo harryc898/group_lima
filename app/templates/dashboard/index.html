@@ -281,19 +281,7 @@
 
               <!-- Content column -->
                 <div class="col-xl-6 col-md-6 mb-4">
-              <!-- Already there and not completed: Infection treatment drugs -->
-                  <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
-                    </div>
-                    <div class="card-body">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            <div class="row">
-                <div class="col-xl-6 col-lg-7">
+                  <!-- Sprint 2: Prescribed items visualisation-->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Top 10 GP Practices by Prescribed Items</h6>
@@ -304,7 +292,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+              </div>
+
 
             <!-- Content Row and Column-->
               <div class="row">
@@ -355,7 +344,7 @@
             <!-- Sprint 2, Task 30: Table of top five most prescribed antidepressants for selected practice -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Top 5 most prescribed antidepressant drugs in each practice</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Top antidepressant drugs prescribed per practice</h6>
                   </div>
                   <div class="card-body">
                     <form method="POST" action="{{ url_for('dashboard.home') }}">
@@ -383,13 +372,33 @@
                       </div>
                       <div>
                         {% else %}
-                          <p>No data available for the selected practice.</p>
+                          <div class="alert alert-warning">
+                            <strong>{{ dashboard_data.top_antidepressant_quantity_plot_data.header }}</strong>
+                            <br>{{ dashboard_data.top_antidepressant_quantity_plot_data.description }}
+                          </div>
                         {% endif %}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- Content row and column -->
+            <div class="row">
+                <div class="col-xl-6 col-lg-7">
+                    <!-- Already there and not completed: Infection treatment drugs -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
           
             <!-- Creatinine clearance calculator -->

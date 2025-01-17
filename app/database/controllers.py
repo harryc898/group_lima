@@ -99,7 +99,6 @@ class Database:
             PrescribingData.practice == selected_practice,
             PrescribingData.BNF_code.like('0403%')  # Adjust the BNF_code filter as necessary
         ).limit(limit).all()
-
         # Return a list of tuples containing the data for each row
-        return [(row.practice, row.BNF_code, row.BNF_name, row.quantity) for row in result]
+        return [(row.practice, row.BNF_code, row.BNF_name, row.quantity, row.items) for row in result]
 
