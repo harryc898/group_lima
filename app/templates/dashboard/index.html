@@ -25,6 +25,7 @@
     <!-- Custom scripts for the dashboard -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/calculators.js') }}"></script>
 
 
@@ -145,127 +146,128 @@
             </div>
 
             <!-- Content Row -->
-<div class="row">
-  <!-- Total items tile -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total items:</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_items }}</div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-pills fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Total GP Practices Tile -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total GP Practices</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_gp_practices }}</div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-hospital fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mean ACT cost tile -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average ACT cost:</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">£</div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Top prescribed items tile -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOP PRESCRIBED ITEM:</div>
-            <span class="text_col_black"></span>
-            <div class="row no-gutters align-items-center">
-              <div class="col-auto">
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">%</div>
+            <div class="row">
+              <!-- Already there: Total items tile -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total items:</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_items }}</div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-pills fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col">
-                <div class="progress progress-sm mr-2">
-                  <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100"></div>
+
+              <!-- Sprint 1: Total GP Practices Tile -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total GP Practices</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ dashboard_data.tile_data_items.total_gp_practices }}</div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-hospital fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Already there and not yet completed: Mean ACT cost tile -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average ACT cost:</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">£</div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Already there and not yet competed: Top prescribed items tile -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOP PRESCRIBED ITEM:</div>
+                        <span class="text_col_black"></span>
+                        <div class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">%</div>
+                          </div>
+                          <div class="col">
+                            <div class="progress progress-sm mr-2">
+                              <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Second Row -->
-<div class="row">
-  <!-- Unique items tile -->
-  <div class="col-xl-6 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">NUMBER OF UNIQUE ITEMS:</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Total ACT cost tile -->
-  <div class="col-xl-6 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL ACT COST:</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">£{{ dashboard_data.tile_data_items.total_act_cost }}</div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-            <!-- Content Row -->
+            <!-- Second Row -->
             <div class="row">
-              <div class="col-xl-6 col-lg-7">
+              <!-- Already there and not yet completed: Unique items tile -->
+              <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">NUMBER OF UNIQUE ITEMS:</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sprint 1: Total ACT cost tile -->
+              <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL ACT COST:</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">£{{ dashboard_data.tile_data_items.total_act_cost }}</div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Content Row and Column-->
+            <div class="row">
+              <div class="col-xl-6 col-md-6 mb-4">
+              <!-- Already there: Graph plotting total items in each PCT -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">{{dashboard_data.top_items_plot_data.header}}</h6>
@@ -276,22 +278,10 @@
                   </div>
                 </div>
               </div>
-                <!-- Content Column -->
-              <div class="col-xl-6">
 
-                <!-- Infection treatment drugs -->
-                <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
-                  </div>
-                  <div class="card-body">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xl-6 col-lg-7">
+              <!-- Content column -->
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <!-- Sprint 2: Prescribed items visualisation-->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Top 10 GP Practices by Prescribed Items</h6>
@@ -302,51 +292,114 @@
                         </div>
                     </div>
                 </div>
-            </div>
+              </div>
 
-            <!-- Content Row -->
-            <div class="row last-row">
 
-              <div class="col-xl-6">
-                <!-- Show the BNF data for slected PCT -->
+            <!-- Content Row and Column-->
+              <div class="row">
+                <div class="col-xl-6 col-md-6 mb-4">
+                <!-- Already there: Table showing BNF data for a selected PCT -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">BNF data per PCT</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('dashboard.home') }}">
+                          <select class="custom-select" id="pct-select" name="pct-option">
+                            {% for item in dashboard_data.pct_list %}
+                              <option value="{{ item }}" {% if item == dashboard_data.selected_pct %}selected{% endif %}>
+                                {{ item }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                          <input type="submit" value="Update" class="btn btn-outline-secondary" />
+                        </form>
+                        <hr />
+                        <table class="table">
+                        <thead>
+                          <td>Practice</td>
+                          <td>BNF code</td>
+                          <td>BNF name</td>
+                          <td>Items</td>
+                        </thead>
+                          <tbody>
+                          {% for row in dashboard_data.pct_data %}
+                            <tr>
+                              <td>{{ row.practice }}</td>
+                              <td>{{ row.BNF_code }}</td>
+                              <td>{{ row.BNF_name }}</td>
+                              <td>{{ row.items }}</td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+
+                <!-- Content Column -->
+              <div class="col-xl-6 col-lg-12">
+
+            <!-- Sprint 2, Task 30: Table of top five most prescribed antidepressants for selected practice -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">BNF data per PCT</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Top antidepressant drugs prescribed per practice</h6>
                   </div>
                   <div class="card-body">
-                      <form method='POST' action="{{ url_for('dashboard.home') }}">
-                        <select class="custom-select" id="input-group-select" name="pct-option">
-                          {% for item in dashboard_data.pct_list %}
-                          <option name="option-list" value="{{ item }}">{{ item }}</option>
+                    <form method="POST" action="{{ url_for('dashboard.home') }}">
+                      <label for="practice-select">Select a Practice:</label>
+                        <select class="custom-select" id="practice-select" name="practice-option">
+                          {% for practice in dashboard_data.practice_list %}
+                            <option value="{{ practice }}" {% if practice == dashboard_data.selected_practice %}selected{% endif %}>
+                              {{ practice }}
+                             </option>
                           {% endfor %}
                         </select>
-                        <input type="submit" value="Update" class="btn btn-outline-secondary" />
-                      </form>
-                      <hr />
-                      <table class="table">
-                      <thead>
-                        <td>Practice</td>
-                        <td>BNF code</td>
-                        <td>BNF name</td>
-                        <td>Items</td>
-                      </thead>
-                        <tbody>
-                        {% for row in dashboard_data.pct_data %}
-                          <tr>
-                            <td>{{ row.practice }}</td>
-                            <td>{{ row.BNF_code }}</td>
-                            <td>{{ row.BNF_name }}</td>
-                            <td>{{ row.items }}</td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                      </table>
+                      <input type="hidden" name="pct-option" value="{{ dashboard_data.selected_pct }}">
+                      <button type="submit" class="btn btn-outline-secondary mt-2">Update</button>
+                    </form>
+                    <div id="bar-chart-container">
+                      {% if dashboard_data.top_antidepressant_quantity_plot_data.graphJSON %}
+                      <div id="antidepressant-chart">
+                        <script>
+                          var antidepressantData = {{ dashboard_data.top_antidepressant_quantity_plot_data.graphJSON | safe }};
+                          Plotly.newPlot('antidepressant-chart', antidepressantData);
+                        </script>
+                      </div>
+                      <div>
+                        <p>{{ dashboard_data.top_antidepressant_quantity_plot_data.description }}</p>
+                      </div>
+                      <div>
+                        {% else %}
+                          <div class="alert alert-warning">
+                            <strong>{{ dashboard_data.top_antidepressant_quantity_plot_data.header }}</strong>
+                            <br>{{ dashboard_data.top_antidepressant_quantity_plot_data.description }}
+                          </div>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+
+            <!-- Content row and column -->
+            <div class="row">
+                <div class="col-xl-6 col-lg-7">
+                    <!-- Already there and not completed: Infection treatment drugs -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           
             <!-- Creatinine clearance calculator -->
             <div id="creat-calc">
@@ -386,6 +439,38 @@
                   </div>
                 </div>
             </div>
+              <!-- Creatinine clearance calculator -->
+              <div id="creat-calc">
+                <div class="card">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Creatinine clearance calculator</h6>
+                    </div>
+                    <div class="card-body">
+                      <p>Sex of patient:</p>
+                      <div>
+                        <label class="radio-inline">
+                          <input type="radio" name="sex" value="m"> Male
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="sex" value="f"> Female
+                        </label>
+                        <p>Age of patient (years):</p>
+                        <input type="number" min="1" max="120" name="patients-age" />
+                        <br /><br />
+                        <p>Weight of patient (kg):</p>
+                        <input type="number" min="1" max="120" name="patients-weight" />
+                        <br /><br />
+                        <p>Serum creatinine (micromol/L):</p>
+                        <input type="number" min="1" max="120" name="patients-serum" />
+                        <br />
+                      </div>
+                      <br />
+                      <hr />
+                      <button type="button" class="btn btn-primary">Calculate</button>
+                      <button type="button" class="btn btn-danger" onclick="popup.hideCeatCalcFormPopup();">Close</button>
+                    </div>
+                  </div>
+              </div>
 
             <!-- About popup -->
             <div id="about-box">

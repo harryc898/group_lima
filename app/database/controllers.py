@@ -81,7 +81,24 @@ class Database:
         """Return the total ACT cost."""
         return (db.session.execute(db.select(func.sum(PrescribingData.ACT_cost)))).first()[0]
 
+    #Sprint 1: Total GP practices tile
     def get_total_gp_practices(self):
         """Return the total number of unique GP practices."""
         total_practices = db.session.execute(func.count((PracticeData.practice_code))).scalar()
         return (total_practices)
+
+    #Sprint 2: Antidepressants visualisation (task 30)
+    def get_distinct_practices(self):
+        """Return the distinct practice codes."""
+        result = db.session.execute(db.select(PrescribingData.practice).distinct()).all()
+        return self.convert_tuple_list_to_raw(result)
+    def get_top_antidepressants_per_practice(self, selected_practice, limit=5):
+        """Fetch the top antidepressants prescribed in a practice, filtered by BNF_code and limited to a specified number."""
+        # Query the database and filter by practice and BNF_code, limiting the result to 5 rows per practice
+        result = db.session.query(PrescribingData).filter(
+            PrescribingData.practice == selected_practice,
+            PrescribingData.BNF_code.like('0403%')  # Adjust the BNF_code filter as necessary
+        ).limit(limit).all()
+        # Return a list of tuples containing the data for each row
+        return [(row.practice, row.BNF_code, row.BNF_name, row.quantity, row.items) for row in result]
+
