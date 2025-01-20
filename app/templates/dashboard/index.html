@@ -472,6 +472,24 @@
                   </div>
               </div>
 
+          <!-- JavaScript Validation Logic -->
+          <script>
+  document.addEventListener('input', function (event) {
+    if (event.target.tagName === 'INPUT' && event.target.type === 'number') {
+      const min = parseInt(event.target.min, 10);
+      const max = parseInt(event.target.max, 10);
+      const value = parseInt(event.target.value, 10);
+
+      if (value < min || value > max) {
+        event.target.value = '';
+      }
+    }
+  });
+</script>
+
+
+
+
             <!-- About popup -->
             <div id="about-box">
               <div class="card">
