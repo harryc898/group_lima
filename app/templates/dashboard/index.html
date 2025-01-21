@@ -396,7 +396,39 @@
                     </div>
                   </div>
                 </div>
-              </div>
+
+                <div class="col-xl-6 col-lg-7"
+                    <!-- Sprint 2 Task 30 version 2 -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Top 5 antidepressant drugs prescribed</h6>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                          <p>Insert description here in index.html line 408</p>
+                        </div>
+                      <hr />
+                        <table class="table">
+                        <thead>
+                          <td>BNF code</td>
+                          <td>BNF name</td>
+                          <td>Total quantity prescribed</td>
+                          <td>Total items prescribed</td>
+                        </thead>
+                          <tbody>
+                          {% for row in dashboard_data.antidepressant_list_data %}
+                            <tr>
+                              <td>{{ row.BNF_code }}</td>
+                              <td>{{ row.BNF_name }}</td>
+                              <td>{{ row.total_quantity }}</td>
+                              <td>{{ row.total_items }}</td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
             </div>
 
 

@@ -102,3 +102,28 @@ class Database:
         # Return a list of tuples containing the data for each row
         return [(row.practice, row.BNF_code, row.BNF_name, row.quantity, row.items) for row in result]
 
+    #Sprint 2: Task 30 version 2 - list top 5 antidepressants
+    def get_top_five_antidepressants(self):
+        result = db.session.query(
+                PrescribingData.BNF_code,  # Group by this column
+                PrescribingData.BNF_name,  # Group by this column
+                func.sum(PrescribingData.quantity).label("total_quantity"),  # Sum the quantities
+                func.sum(PrescribingData.items).label("total_items"),  # Sum the items
+            ).filter(
+                PrescribingData.BNF_code.like('0403%'),  # BNF code starts with 0403
+                ~PrescribingData.BNF_name.like('Amitriptyline%')  # BNF name does not start with Amitriptyline
+            ).group_by(
+                PrescribingData.BNF_code,
+                PrescribingData.BNF_name
+            ).order_by(
+                func.sum(PrescribingData.quantity).desc()
+            ).limit(5).all()
+        return [{
+            "BNF_code": row[0],
+            "BNF_name": row[1],
+            "total_quantity": row[2],
+            "total_items": row[3],
+            }
+            for row in result
+        ]
+
