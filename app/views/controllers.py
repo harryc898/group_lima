@@ -53,8 +53,9 @@ def home():
         "practice_data": selected_practice_data,
         "selected_pct": selected_pct,
         "selected_practice": selected_practice,
-        #Graph for top 5 antidepressant drugs prescribed
+        #S2, T30: Graph for top 5 antidepressant drugs prescribed
         "top_antidepressant_quantity_plot_data": generate_antidepressant_barchart_data(selected_practice=selected_practice),
+        "antidepressant_list_data": db_mod.get_top_five_antidepressants(),
     }
     
     # render the HTML page passing in relevant data
@@ -217,4 +218,3 @@ def generate_antidepressant_barchart_data(selected_practice=None):
         'selected_practice': selected_practice   # Currently selected practice
     }
     return plot_data
-
