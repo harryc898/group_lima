@@ -111,5 +111,48 @@ class TestGPPracticeAPI(unittest.TestCase):
         self.assertEqual(len(prescribed_items_per_practice[example_practice_code]), len(example_items),
                          f"Practice {example_practice_code} should have the correct number of prescribed items")
 
+
+        def test_creatinine_calculator():
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+            try:
+                driver.get(
+                    'file:///C:/Users/carphar/Documents/group_lima/group_lima/app/templates/dashboard/index.html')
+
+                age_input = driver.find_element(By.NAME, 'patients-age')
+                age_input.send_keys('150')
+                time.sleep(1)
+
+                assert age_input.get_attribute('value') == '', "Age input should reject value above max"
+
+            finally:
+                driver.quit()
+
+        if __name__ == "__main__":
+            test_creatinine_calculator()
+
+            if __name__ == "__main__":
+                try:
+                    test_creatinine_calculator()
+                    print("Test completed successfully.")
+                except AssertionError as e:
+                    print(f"Test failed: {e}")
+                except Exception as e:
+                    print(f"An unexpected error occurred: {e}")
+
+
+import unittest
+from calculator import calculateCreatinineClearance
+
+class TestCreatinineClearance(unittest.TestCase):
+
+    def test_edge_case_age(self):
+        result = calculateCreatinineClearance(age=18, weight=70, creatinine=1.0, sex="male")
+        self.assertTrue(result > 0)
+
+    def test_invalid_input(self):
+        with self.assertRaises(ValueError):
+            calculateCreatinineClearance(age=-5, weight=70, creatinine=1.0, sex="male")
+
 if __name__ == '__main__':
     unittest.main()
