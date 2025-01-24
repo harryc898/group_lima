@@ -340,49 +340,35 @@
 
                 <!-- Content Column -->
               <div class="col-xl-6 col-lg-12">
-
-            <!-- Sprint 2, Task 30: Table of top five most prescribed antidepressants for selected practice -->
-                <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Top antidepressant drugs prescribed per practice</h6>
-                  </div>
-                  <div class="card-body">
-                    <form method="POST" action="{{ url_for('dashboard.home') }}">
-                      <label for="practice-select">Select a Practice:</label>
-                        <select class="custom-select" id="practice-select" name="practice-option">
-                          {% for practice in dashboard_data.practice_list %}
-                            <option value="{{ practice }}" {% if practice == dashboard_data.selected_practice %}selected{% endif %}>
-                              {{ practice }}
-                             </option>
+                  <!-- Sprint 2 Task 30 version 2 -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Top 5 antidepressant drugs prescribed</h6>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                          <p>These are the top 5 most prescribed antidepressant drugs (excluding Amitriptyline) across all practices. The total number (sum) of items prescribed are shown.</p>
+                        </div>
+                      <hr />
+                        <table class="table">
+                        <thead>
+                          <td>BNF name</td>
+                          <td>Total items prescribed</td>
+                        </thead>
+                          <tbody>
+                          {% for row in dashboard_data.antidepressant_list_data %}
+                            <tr>
+                              <td>{{ row.BNF_name }}</td>
+                              <td>{{ row.total_items }}</td>
+                            </tr>
                           {% endfor %}
-                        </select>
-                      <input type="hidden" name="pct-option" value="{{ dashboard_data.selected_pct }}">
-                      <button type="submit" class="btn btn-outline-secondary mt-2">Update</button>
-                    </form>
-                    <div id="bar-chart-container">
-                      {% if dashboard_data.top_antidepressant_quantity_plot_data.graphJSON %}
-                      <div id="antidepressant-chart">
-                        <script>
-                          var antidepressantData = {{ dashboard_data.top_antidepressant_quantity_plot_data.graphJSON | safe }};
-                          Plotly.newPlot('antidepressant-chart', antidepressantData);
-                        </script>
-                      </div>
-                      <div>
-                        <p>{{ dashboard_data.top_antidepressant_quantity_plot_data.description }}</p>
-                      </div>
-                      <div>
-                        {% else %}
-                          <div class="alert alert-warning">
-                            <strong>{{ dashboard_data.top_antidepressant_quantity_plot_data.header }}</strong>
-                            <br>{{ dashboard_data.top_antidepressant_quantity_plot_data.description }}
-                          </div>
-                        {% endif %}
-                      </div>
+                          </tbody>
+                        </table>
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
+
 
             <!-- Content row and column -->
             <div class="row">
@@ -396,40 +382,9 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="col-xl-6 col-lg-7"
-                    <!-- Sprint 2 Task 30 version 2 -->
-                  <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Top 5 antidepressant drugs prescribed</h6>
-                    </div>
-                    <div class="card-body">
-                        <div>
-                          <p>Insert description here in index.html line 408</p>
-                        </div>
-                      <hr />
-                        <table class="table">
-                        <thead>
-                          <td>BNF code</td>
-                          <td>BNF name</td>
-                          <td>Total quantity prescribed</td>
-                          <td>Total items prescribed</td>
-                        </thead>
-                          <tbody>
-                          {% for row in dashboard_data.antidepressant_list_data %}
-                            <tr>
-                              <td>{{ row.BNF_code }}</td>
-                              <td>{{ row.BNF_name }}</td>
-                              <td>{{ row.total_quantity }}</td>
-                              <td>{{ row.total_items }}</td>
-                            </tr>
-                          {% endfor %}
-                          </tbody>
-                        </table>
-                    </div>
-                  </div>
-                </div>
             </div>
+
+
 
 
           
