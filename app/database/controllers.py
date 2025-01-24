@@ -98,3 +98,4 @@ class Database:
         ).group_by(PrescribingData.BNF_name).order_by(func.sum(PrescribingData.items).desc()).limit(5).all()
         return [{"BNF_name": row[0],"total_items": row[1]}for row in result]
 
+
