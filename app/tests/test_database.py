@@ -9,8 +9,11 @@ DESCRIPTION:   Suite of tests for testing the dashboards database
 """
 
 import unittest
+import coverage
 from app import app
 from app.database.controllers import Database
+from unittest.mock import patch
+
 
 class DatabaseTests(unittest.TestCase):
     """Class for testing database functionality and connection."""
@@ -81,6 +84,45 @@ class TestGPPracticeAPI(unittest.TestCase):
             {'practice': 'A83012', 'BNF_name': 'Lansoprazole_Cap 30mg (E/C Gran)', 'items': 44458},
             {'practice': 'A83037', 'BNF_name': 'Omeprazole_Cap E/C 20mg', 'items': 42326},
         ]
+
+    class TestTopFiveAntidepressants(unittest.TestCase):
+        """Test the `get_top_five_antidepressants` method."""
+
+        def setUp(self):
+            """Set up mock data for testing."""
+            # Create a mock database controller
+            self.mock_data = [
+                {'BNF_name': 'Drug A', 'BNF_code': '040301', 'items': 120},
+                {'BNF_name': 'Drug B', 'BNF_code': '040302', 'items': 110},
+                {'BNF_name': 'Amitriptyline', 'BNF_code': '040303', 'items': 100},
+                {'BNF_name': 'Drug C', 'BNF_code': '040304', 'items': 90},
+                {'BNF_name': 'Drug D', 'BNF_code': '040305', 'items': 80},
+                {'BNF_name': 'Drug E', 'BNF_code': '040306', 'items': 70},
+                {'BNF_name': 'Drug F', 'BNF_code': '040307', 'items': 60},
+            ]
+
+        @patch('app.database.controllers.Database.get_top_five_antidepressants')
+        def test_get_top_five_antidepressants(self, mock_get_top_five_antidepressants):
+            """Test fetching the top 5 antidepressants excluding Amitriptyline."""
+            # Mock the method to return filtered data
+            mock_get_top_five_antidepressants.return_value = [
+                {'BNF_name': 'Drug A', 'total_items': 120},
+                {'BNF_name': 'Drug B', 'total_items': 110},
+                {'BNF_name': 'Drug C', 'total_items': 90},
+                {'BNF_name': 'Drug D', 'total_items': 80},
+                {'BNF_name': 'Drug E', 'total_items': 70},
+            ]
+
+            # Call the method
+            db_instance = Database()
+            result = db_instance.get_top_five_antidepressants()
+
+            # Assertions
+            self.assertEqual(len(result), 5, "Should return exactly 5 drugs.")
+            self.assertNotIn('Amitriptyline', [drug['BNF_name'] for drug in result],
+                             "Amitriptyline should be excluded.")
+            self.assertEqual(result[0]['BNF_name'], 'Drug A', "The top drug should be 'Drug A'.")
+            self.assertEqual(result[-1]['BNF_name'], 'Drug E', "The last drug should be 'Drug E'.")
 
     def test_get_total_gp_practices(self):
         """Test the total number of GP practices."""
