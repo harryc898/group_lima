@@ -31,3 +31,35 @@ function calculateCreatinineClearance() {
     document.getElementById("result").innerHTML =
         `Estimated Creatinine Clearance: <strong>${creatinineClearance.toFixed(2)} mL/min</strong>`;
 }
+
+function calculateBMI() {
+      // Get user input
+      const weight = parseFloat(document.getElementById('weight').value);
+      const heightCm = parseFloat(document.getElementById('height').value);
+
+      if (weight > 0 && heightCm > 0) {
+          // Convert height from cm to meters
+          const heightM = heightCm / 100;
+
+          // Calculate BMI
+          const bmi = weight / (heightM * heightM);
+
+          // Determine BMI category
+          let category = '';
+          if (bmi < 18.5) {
+              category = 'Underweight';
+          } else if (bmi < 24.9) {
+              category = 'Normal weight';
+          } else if (bmi < 29.9) {
+              category = 'Overweight';
+          } else {
+              category = 'Obesity';
+          }
+
+          // Display the result
+          document.getElementById('bmiResult').innerHTML =
+              `<p>Your BMI is <strong>${bmi.toFixed(2)}</strong> (${category}).</p>`;
+      } else {
+          document.getElementById('bmiResult').innerHTML = '<p>Please enter valid weight and height values.</p>';
+      }
+  }

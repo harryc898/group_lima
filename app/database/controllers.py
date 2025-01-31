@@ -43,22 +43,38 @@ class Database:
 
     def get_prescribed_items_per_gp_practice(self):
         """Return the top 10 GP Practices by total prescribed items with breakdown."""
-        # Query for the top 10 practices based on total items prescribed
+
+        # Join PrescribingData and PracticeData to get practice names
         result = db.session.query(
-            PrescribingData.practice,
+            PracticeData.practice_name,  # Fetch practice name instead of practice code
             func.sum(PrescribingData.items).label('total_items')
-        ).group_by(PrescribingData.practice).order_by(func.sum(PrescribingData.items).desc()).limit(10).all()
+        ).join(
+            PracticeData, PrescribingData.practice == PracticeData.practice_code  # Join condition
+        ).group_by(
+            PracticeData.practice_name
+        ).order_by(
+            func.sum(PrescribingData.items).desc()
+        ).limit(10).all()
 
         # Fetch the breakdown of the most prescribed items for each top practice
         breakdown = []
-        for practice, _ in result:
+        for practice_name, _ in result:
             most_prescribed = db.session.query(
                 PrescribingData.BNF_name,
                 func.sum(PrescribingData.items).label('item_count')
-            ).filter(PrescribingData.practice == practice).group_by(PrescribingData.BNF_name).order_by(
-                func.sum(PrescribingData.items).desc()).all()
+            ).join(
+                PracticeData, PrescribingData.practice == PracticeData.practice_code
+                # Ensure join applies to breakdown query
+            ).filter(
+                PracticeData.practice_name == practice_name  # Filter by practice name
+            ).group_by(
+                PrescribingData.BNF_name
+            ).order_by(
+                func.sum(PrescribingData.items).desc()
+            ).all()
+
             breakdown.append({
-                'practice': practice,
+                'practice': practice_name,
                 'items': most_prescribed
             })
 

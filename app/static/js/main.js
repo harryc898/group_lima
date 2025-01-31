@@ -35,4 +35,5 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             console.error('Error loading chart data:', error);
         });
+
 });
