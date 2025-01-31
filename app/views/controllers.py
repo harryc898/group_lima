@@ -63,7 +63,7 @@ def generate_data_for_tiles():
     tile_data = {
         "total_items": db_mod.get_total_number_items(),
         "total_gp_practices": db_mod.get_total_gp_practices(),
-        "avg_act_cost": None,
+        "avg_act_cost": "{:,.2f}".format(db_mod.get_total_act_cost() / db_mod.get_total_number_items()),
         "top_px_item": None,
         "num_unique_items": db_mod.get_unique_items(),
         "total_act_cost": "{:,.2f}".format(db_mod.get_total_act_cost())
