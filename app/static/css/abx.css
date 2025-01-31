@@ -63,6 +63,11 @@
     border: 1px solid black;
 }
 
+#bmiResult {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
 
 #about-box{
     position:absolute;
