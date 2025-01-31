@@ -85,45 +85,6 @@ class TestGPPracticeAPI(unittest.TestCase):
             {'practice': 'A83037', 'BNF_name': 'Omeprazole_Cap E/C 20mg', 'items': 42326},
         ]
 
-    class TestTopFiveAntidepressants(unittest.TestCase):
-        """Test the `get_top_five_antidepressants` method."""
-
-        def setUp(self):
-            """Set up mock data for testing."""
-            # Create a mock database controller
-            self.mock_data = [
-                {'BNF_name': 'Drug A', 'BNF_code': '040301', 'items': 120},
-                {'BNF_name': 'Drug B', 'BNF_code': '040302', 'items': 110},
-                {'BNF_name': 'Amitriptyline', 'BNF_code': '040303', 'items': 100},
-                {'BNF_name': 'Drug C', 'BNF_code': '040304', 'items': 90},
-                {'BNF_name': 'Drug D', 'BNF_code': '040305', 'items': 80},
-                {'BNF_name': 'Drug E', 'BNF_code': '040306', 'items': 70},
-                {'BNF_name': 'Drug F', 'BNF_code': '040307', 'items': 60},
-            ]
-
-        @patch('app.database.controllers.Database.get_top_five_antidepressants')
-        def test_get_top_five_antidepressants(self, mock_get_top_five_antidepressants):
-            """Test fetching the top 5 antidepressants excluding Amitriptyline."""
-            # Mock the method to return filtered data
-            mock_get_top_five_antidepressants.return_value = [
-                {'BNF_name': 'Drug A', 'total_items': 120},
-                {'BNF_name': 'Drug B', 'total_items': 110},
-                {'BNF_name': 'Drug C', 'total_items': 90},
-                {'BNF_name': 'Drug D', 'total_items': 80},
-                {'BNF_name': 'Drug E', 'total_items': 70},
-            ]
-
-            # Call the method
-            db_instance = Database()
-            result = db_instance.get_top_five_antidepressants()
-
-            # Assertions
-            self.assertEqual(len(result), 5, "Should return exactly 5 drugs.")
-            self.assertNotIn('Amitriptyline', [drug['BNF_name'] for drug in result],
-                             "Amitriptyline should be excluded.")
-            self.assertEqual(result[0]['BNF_name'], 'Drug A', "The top drug should be 'Drug A'.")
-            self.assertEqual(result[-1]['BNF_name'], 'Drug E', "The last drug should be 'Drug E'.")
-
     def test_get_total_gp_practices(self):
         """Test the total number of GP practices."""
         total_gp_practices = len(self.mock_practices)  # Count practices in mock data
@@ -153,38 +114,89 @@ class TestGPPracticeAPI(unittest.TestCase):
         self.assertEqual(len(prescribed_items_per_practice[example_practice_code]), len(example_items),
                          f"Practice {example_practice_code} should have the correct number of prescribed items")
 
+if __name__ == "__main__":
+    unittest.main()
 
-        def test_creatinine_calculator():
-            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+class TestTopFiveAntidepressants(unittest.TestCase):
+    """Test the `get_top_five_antidepressants` method."""
 
-            try:
-                driver.get(
-                    'file:///C:/Users/carphar/Documents/group_lima/group_lima/app/templates/dashboard/index.html')
+    def setUp(self):
+        """Set up mock data for testing."""
+        # Create a mock database controller
+        self.mock_data = [
+            {'BNF_name': 'Drug A', 'BNF_code': '040301', 'items': 120},
+            {'BNF_name': 'Drug B', 'BNF_code': '040302', 'items': 110},
+            {'BNF_name': 'Amitriptyline', 'BNF_code': '040303', 'items': 100},
+            {'BNF_name': 'Drug C', 'BNF_code': '040304', 'items': 90},
+            {'BNF_name': 'Drug D', 'BNF_code': '040305', 'items': 80},
+            {'BNF_name': 'Drug E', 'BNF_code': '040306', 'items': 70},
+            {'BNF_name': 'Drug F', 'BNF_code': '040307', 'items': 60},
+        ]
 
-                age_input = driver.find_element(By.NAME, 'patients-age')
-                age_input.send_keys('150')
-                time.sleep(1)
+    @patch('app.database.controllers.Database.get_top_five_antidepressants')
+    def test_get_top_five_antidepressants(self, mock_get_top_five_antidepressants):
+        """Test fetching the top 5 antidepressants excluding Amitriptyline."""
+        # Mock the method to return filtered data
+        mock_get_top_five_antidepressants.return_value = [
+            {'BNF_name': 'Drug A', 'total_items': 120},
+            {'BNF_name': 'Drug B', 'total_items': 110},
+            {'BNF_name': 'Drug C', 'total_items': 90},
+            {'BNF_name': 'Drug D', 'total_items': 80},
+            {'BNF_name': 'Drug E', 'total_items': 70},
+        ]
 
-                assert age_input.get_attribute('value') == '', "Age input should reject value above max"
+        # Call the method
+        db_instance = Database()
+        result = db_instance.get_top_five_antidepressants()
 
-            finally:
-                driver.quit()
+        # Assertions
+        self.assertEqual(len(result), 5, "Should return exactly 5 drugs.")
+        self.assertNotIn('Amitriptyline', [drug['BNF_name'] for drug in result],
+                         "Amitriptyline should be excluded.")
+        self.assertEqual(result[0]['BNF_name'], 'Drug A', "The top drug should be 'Drug A'.")
+        self.assertEqual(result[-1]['BNF_name'], 'Drug E', "The last drug should be 'Drug E'.")
 
-        if __name__ == "__main__":
+if __name__ == "__main__":
+    unittest.main()
+
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+import time
+
+def test_creatinine_calculator():
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+    try:
+        driver.get(
+            'file:///C:/Users/carphar/Documents/group_lima/group_lima/app/templates/dashboard/index.html')
+
+        age_input = driver.find_element(By.NAME, 'patients-age')
+        age_input.send_keys('150')
+        time.sleep(1)
+
+        assert age_input.get_attribute('value') == '', "Age input should reject value above max"
+
+    finally:
+        driver.quit()
+
+if __name__ == "__main__":
+    test_creatinine_calculator()
+
+    if __name__ == "__main__":
+        try:
             test_creatinine_calculator()
-
-            if __name__ == "__main__":
-                try:
-                    test_creatinine_calculator()
-                    print("Test completed successfully.")
-                except AssertionError as e:
-                    print(f"Test failed: {e}")
-                except Exception as e:
-                    print(f"An unexpected error occurred: {e}")
+            print("Test completed successfully.")
+        except AssertionError as e:
+            print(f"Test failed: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
 
 import unittest
-from calculator import calculateCreatinineClearance
+from .calculator import calculateCreatinineClearance
 
 class TestCreatinineClearance(unittest.TestCase):
 
