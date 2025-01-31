@@ -13,7 +13,7 @@ function Popup()
     popup.mask = document.getElementById("page-mask");
     popup.entryFormPopup = document.getElementById("creat-calc");
     popup.aboutPopup = document.getElementById("about-box");
-
+    popup.bmiCalcPopup = document.getElementById("bmi-calc");
     // display the popup mask
     popup.showMask = function()
     {
@@ -41,6 +41,24 @@ function Popup()
     {
         this.hideMask();
         this.entryFormPopup.style.display = "none";
+    }
+
+    popup.showBMICalcFormPopup = function()
+    {
+       console.log("BMI Popup function called!"); // Debugging log
+       this.showMask();
+        if (this.bmiCalcPopup) {
+        this.bmiCalcPopup.style.display = "block";
+        this.positionDialogue(this.bmiCalcPopup);
+        } else {
+            console.error("BMI Calculator popup element not found");
+            }
+        }
+
+     popup.hideBMICalcFormPopup = function()
+    {
+        this.hideMask();
+        this.bmiCalcPopup.style.display = "none";
     }
 
     // show the about popup

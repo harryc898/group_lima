@@ -85,6 +85,13 @@
           </div>
         </li>
 
+         <li class="nav-item">
+        <div class="nav-link" onclick="popup.showBMICalcFormPopup();">
+            <i class="fas fa-weight"></i>
+            <span>BMI Calculator</span>
+        </div>
+    </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider">
       </ul>
@@ -460,28 +467,22 @@
               </div>
 
 
-        <div id="bmi-calc">
-  <div class="card">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">BMI Calculator</h6>
-      </div>
-      <div class="card-body">
-          <div id="bmi-calc-left-column">
-              <p>Weight of patient (kg):</p>
-              <input type="number" min="1" max="500" name="patients-weight" id="weight" placeholder="Enter weight in kg" required>
-              <br /><br />
-              <p>Height of patient (cm):</p>
-              <input type="number" min="50" max="250" name="patients-height" id="height" placeholder="Enter height in cm" required>
-              <br /><br />
-              <hr />
-              <button type="button" class="btn btn-primary" onclick="calculateBMI()">Calculate</button>
-          </div>
-          <div id="bmi-calc-right-column">
-              <div id="bmiResult" class="result"></div>
-          </div>
-      </div>
-  </div>
-</div>
+              <div id="bmi-calc" class="popup-container" style="display: none;">
+                <div class="popup-content">
+                  <span class="close" onclick="popup.hideBMICalcFormPopup();">&times;</span>
+                     <h2>BMI Calculator</h2>
+                      <form>
+                    <label for="weight">Weight (kg):</label>
+                        <input type="number" id="weight" name="weight">
+
+                    <label for="height">Height (m):</label>
+                        <input type="number" id="height" name="height">
+
+                      <button type="button" onclick="calculateBMI()">Calculate</button>
+                    </form>
+                  <p id="bmiResult"></p>
+                  </div>
+              </div>
 
           <!-- JavaScript Validation Logic -->
           <script>
