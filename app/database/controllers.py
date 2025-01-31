@@ -114,4 +114,8 @@ class Database:
         ).group_by(PrescribingData.BNF_name).order_by(func.sum(PrescribingData.items).desc()).limit(5).all()
         return [{"BNF_name": row[0],"total_items": row[1]}for row in result]
 
-
+    #Sprint 3: Task 3 - unique items tile
+    def get_unique_items(self):
+        """Return the total number of unique items"""
+        unique_items = db.session.execute(db.select(func.count(db.distinct(PrescribingData.BNF_code)))).scalar()
+        return(unique_items)
