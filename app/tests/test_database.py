@@ -48,6 +48,21 @@ class DatabaseTests(unittest.TestCase):
         """Test that the total number of GP practices returns the correct value."""
         self.assertEqual(self.db_mod.get_total_gp_practices(), 9348, 'Test total GP practices returns correct value')
 
+    def test_get_prescribed_items_per_pct(self):
+        """Test that get_prescribed_items_per_pct returns the correct total items per PCT."""
+        # Expected output based on SQL query results (total prescribed items per PCT)
+        expected_output = [
+            799112, 652972, 636539, 583776, 567186, 567062, 531267,
+            531254, 457151, 430706, 395672, 374641, 336864, 331009,
+            299724, 253161, 229169, 216994, 6612, 2855, 2765, 2524,
+            2365, 1445, 1269, 1083, 976, 965, 846, 165, 21, 11, 2, 2
+        ]
+        # Call the function
+        result = self.db_mod.get_prescribed_items_per_pct()
+        # Assertion: Check if the function output matches the expected list
+        self.assertEqual(result, expected_output,
+                         "The function should return the correct list of prescribed item totals per PCT.")
+
 if __name__ == "__main__":
     unittest.main()
 
