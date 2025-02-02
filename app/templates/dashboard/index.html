@@ -46,6 +46,28 @@
               var graphs = {{ dashboard_data.top_items_plot_data.graphJSON | safe }};
               Plotly.plot('chart2',graphs,{});
           });
+          // Function to toggle dark mode
+    function toggleDarkMode() {
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const cards = document.querySelectorAll('.card');
+        const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+
+        // Toggle dark mode class for the body
+        body.classList.toggle('dark-mode');
+
+        // Toggle dark mode class for the sidebar
+        if (sidebar) sidebar.classList.toggle('dark-mode');
+
+        // Toggle dark mode class for all cards
+        cards.forEach(card => card.classList.toggle('dark-mode'));
+
+        // Toggle dark mode class for all buttons
+        buttons.forEach(button => button.classList.toggle('dark-mode'));
+    }
+
+    // Add event listener to the toggle button
+    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
     </script>
   </head>
 
@@ -57,17 +79,23 @@
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-        <img id="uom-logo" src="{{url_for('static', filename='img/logo-uom.png') }}" />
-        <br />
-        <hr class="sidebar-divider my-0">
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <div class="nav-link" onclick="popup.showAboutPopup();">
-            <i class="fas fa-info-circle"></i>
-            <span>About</span></div>
-        </li>
+          <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+  <div class="text-center">
+    <!-- UOM Logo -->
+    <img id="uom-logo" src="{{url_for('static', filename='img/logo-uom.png')}}" alt="UOM Logo" style="width: 230px; margin-bottom: 10px;" />
+    <!-- UCL Logo -->
+    <img id="ucl-logo" src="{{url_for('static', filename='img/logo-ucl.png')}}" alt="UCL Logo" style="width: 200px;" />
+  </div>
+  <br />
+  <hr class="sidebar-divider my-0">
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item active">
+    <div class="nav-link" onclick="popup.showAboutPopup();">
+      <i class="fas fa-info-circle"></i>
+      <span>About</span>
+    </div>
+  </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -86,6 +114,11 @@
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider">
+
+          <button id="darkModeToggle" class="btn btn-secondary">Toggle Dark Mode</button>
+
+          <!-- Divider -->
         <hr class="sidebar-divider">
       </ul>
       <!-- End of Sidebar -->
