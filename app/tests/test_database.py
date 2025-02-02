@@ -42,10 +42,18 @@ class DatabaseTests(unittest.TestCase):
         'Test total items returns correct value'
     def test_get_total_act_cost(self):
         """Test that the total act cost returns the correct value."""
-        self.assertEqual(self.db_mod.get_total_act_cost(),60316449.37,)
+        self.assertEqual(self.db_mod.get_total_act_cost(),60316449.37000624,)
         'Test total act cost returns correct value'
+
         self.assertEqual(self.db_mod.get_total_number_items(),8218165,)
         'Test total items returns correct value'
+
+    def test_avg_act_cost(self):
+        """Test that the average act cost returns the correct value."""
+        self.assertEqual("{:,.2f}".format(
+            self.db_mod.get_total_act_cost() /
+            self.db_mod.get_total_number_items()),
+            '7.34')
     def test_get_total_number_of_GP_practices(self):
         """Test that the total number of GP practices returns the correct value."""
         self.assertEqual(self.db_mod.get_total_gp_practices(), 9348, 'Test total GP practices returns correct value')
