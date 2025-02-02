@@ -115,3 +115,21 @@ class Database:
         return [{"BNF_name": row[0],"total_items": row[1]}for row in result]
 
 
+    #Sprint3 t31
+    def get_top_pctgp(self):
+        """Find PCT with the most GP Practices."""
+
+        # Query to count the number of distinct GP practices per PCT
+        result = db.session.query(
+            PrescribingData.PCT,
+            func.count(func.distinct(PrescribingData.practice)).label('num_practices')
+        ).group_by(PrescribingData.PCT).order_by(
+            func.count(func.distinct(PrescribingData.practice)).desc()
+        ).first()  # Get the top result (PCT with most practices)
+
+        # If result is found, unpack it; otherwise, return default values
+        most_recurring_PCT = result[0] if result else None
+        distinct_practice_count = result[1] if result else 0
+
+        return most_recurring_PCT, distinct_practice_count
+
