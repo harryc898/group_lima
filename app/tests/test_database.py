@@ -13,6 +13,7 @@ import coverage
 from app import app
 from app.database.controllers import Database
 from unittest.mock import patch
+from flask import url_for
 
 
 class DatabaseTests(unittest.TestCase):
@@ -63,10 +64,21 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(result, expected_output,
                          "The function should return the correct list of prescribed item totals per PCT.")
 
+    def test_get_distinct_pcts(self):
+        """Test that the total number of GP practices returns the correct value."""
+        result = self.db_mod.get_distinct_pcts()
+        result_sorted = sorted(result)
+        expected_first_three = ["00C", "00D", "00J"]
+        expected_count = 34
+        #Check first three PCTs in the list are correct
+        self.assertEqual(result_sorted[:3], expected_first_three,"The first three distinct PCTs should match expected values.")
+        # Check the correct number of PCTs have been identified
+        self.assertEqual(len(result_sorted), expected_count,f"The total number of distinct PCTs should be {expected_count}.")
+
 if __name__ == "__main__":
     unittest.main()
 
-
+#S2 Tests for the GP practice prescribed items bar chart
 class TestGPPracticeAPI(unittest.TestCase):
     """Test GP Practice API without external dependencies."""
 
@@ -132,6 +144,7 @@ class TestGPPracticeAPI(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
+#S2: Tests for the antidepressant table
 class TestTopFiveAntidepressants(unittest.TestCase):
     """Test the `get_top_five_antidepressants` method."""
 
@@ -174,7 +187,7 @@ class TestTopFiveAntidepressants(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
-
+#S2: Tests for the creatinine calculator
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -225,3 +238,36 @@ class TestCreatinineClearance(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+#S3: Adding tests for the home route in the Views tab
+class TestHomeRoute(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Set up before running all tests."""
+        # Set SERVER_NAME in Flask config for testing
+        app.config['SERVER_NAME'] = 'localhost'  # You can change this to a proper domain if needed
+        app.config["TESTING"] = True
+        cls.client = app.test_client()
+    def setUp(self):
+        """Set up before each test."""
+        self.app = app
+        self.app_context = self.app.app_context()  # Create an app context
+        self.app_context.push()  # Activate the context
+        self.db_mod = Database()  # Create a new database instance for testing
+    def tearDown(self):
+        """Clean up after each test."""
+        self.app_context.pop()  # Remove the app context
+    def test_home_get_request(self):
+        """Test that the home page loads successfully with a GET request."""
+        response = self.client.get(url_for('dashboard.home'))
+        self.assertEqual(response.status_code, 200, "Home page should load successfully.")
+    def test_home_post_request_with_pct_selection(self):
+        """Test that POST request updates selected PCT correctly."""
+        # Mock get_distinct_pcts return
+        self.db_mod.get_distinct_pcts = lambda: ["00C", "00D", "00J"]
+        response = self.client.post(url_for('dashboard.home'), data={"pct-option": "00D"})
+        self.assertEqual(response.status_code, 200, "Home page should handle POST requests.")
+
+if __name__ == "__main__":
+    unittest.main()
+
