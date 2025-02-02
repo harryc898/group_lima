@@ -40,6 +40,7 @@ def home():
         "tile_data_items": generate_data_for_tiles(),
         #Graph already on dashboard for PCT items
         "top_items_plot_data": generate_top_px_items_barchart_data(),
+        "top_practices_plot_data": generate_top_practices_barchart_data(),
         #pct/practice list, data and selected cells
         "pct_list": pcts,
         "pct_data": selected_pct_data,
