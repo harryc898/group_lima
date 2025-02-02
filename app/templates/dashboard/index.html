@@ -222,7 +222,7 @@
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average ACT cost:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">£</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">£{{ dashboard_data.tile_data_items.avg_act_cost }}</div>
                       </div>
                       <div class="col-auto">
                         <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
@@ -262,14 +262,18 @@
 
             <!-- Second Row -->
             <div class="row">
-              <!-- Already there and not yet completed: Unique items tile -->
+              <!-- Sprint 3, Task 3: Unique items tile -->
               <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">NUMBER OF UNIQUE ITEMS:</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          NUMBER OF UNIQUE ITEMS:
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ dashboard_data.tile_data_items.num_unique_items}}
+                        </div>
                       </div>
                       <div class="col-auto">
                         <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
@@ -502,13 +506,12 @@
                     <label for="weight">Weight (kg):</label>
                         <input type="number" id="weight" name="weight">
 
-                    <label for="height">Height (m):</label>
+                    <label for="height">Height (cm):</label>
                         <input type="number" id="height" name="height">
 
-                      <button type="button" onclick="calculateBMI()">Calculate</button>
+                      <button id="calculate-bmi" type="button" onclick="calculateBMI()">Calculate</button>
                     </form>
                   <p id="bmiResult"></p>
-                  </div>
               </div>
 
           <!-- JavaScript Validation Logic -->

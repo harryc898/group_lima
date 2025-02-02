@@ -36,8 +36,11 @@ function calculateBMI() {
       // Get user input
       const weight = parseFloat(document.getElementById('weight').value);
       const heightCm = parseFloat(document.getElementById('height').value);
+      // Define maximum values
+      const maxWeight = 1000
+      const maxHeightCm = 350
 
-      if (weight > 0 && heightCm > 0) {
+      if (weight > 0 && heightCm > 0 && weight <= maxWeight && heightCm <= maxHeightCm) {
           // Convert height from cm to meters
           const heightM = heightCm / 100;
 

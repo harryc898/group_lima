@@ -13,11 +13,18 @@ import coverage
 from app import app
 from app.database.controllers import Database
 from unittest.mock import patch
+from flask import url_for
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
 
 
 class DatabaseTests(unittest.TestCase):
     """Class for testing database functionality and connection."""
-
     def setUp(self):
         """Set up before each test."""
         # Tell Flask to use the app
@@ -25,36 +32,53 @@ class DatabaseTests(unittest.TestCase):
         self.app_context = self.app.app_context()  # Create app context
         self.app_context.push()  # Activate the context
         self.db_mod = Database()  # Create the database instance
-
     def tearDown(self):
         """Run post each test."""
         # Pop the application context
         self.app_context.pop()
-
     def test_get_total_number_items(self):
         """Test that the total number of items returns the correct value."""
         self.assertEqual(self.db_mod.get_total_number_items(),8218165,)
         'Test total items returns correct value'
-
     def test_get_total_act_cost(self):
         """Test that the total act cost returns the correct value."""
         self.assertEqual(self.db_mod.get_total_act_cost(),60316449.37,)
         'Test total act cost returns correct value'
-
         self.assertEqual(self.db_mod.get_total_number_items(),8218165,)
         'Test total items returns correct value'
-
     def test_get_total_number_of_GP_practices(self):
         """Test that the total number of GP practices returns the correct value."""
         self.assertEqual(self.db_mod.get_total_gp_practices(), 9348, 'Test total GP practices returns correct value')
-
+    def test_get_prescribed_items_per_pct(self):
+        """Test that get_prescribed_items_per_pct returns the correct total items per PCT."""
+        # Expected output based on SQL query results (total prescribed items per PCT)
+        expected_output = [
+            799112, 652972, 636539, 583776, 567186, 567062, 531267,
+            531254, 457151, 430706, 395672, 374641, 336864, 331009,
+            299724, 253161, 229169, 216994, 6612, 2855, 2765, 2524,
+            2365, 1445, 1269, 1083, 976, 965, 846, 165, 21, 11, 2, 2
+        ]
+        # Call the function
+        result = self.db_mod.get_prescribed_items_per_pct()
+        # Assertion: Check if the function output matches the expected list
+        self.assertEqual(result, expected_output,
+                         "The function should return the correct list of prescribed item totals per PCT.")
+    def test_get_distinct_pcts(self):
+        """Test that the total number of GP practices returns the correct value."""
+        result = self.db_mod.get_distinct_pcts()
+        result_sorted = sorted(result)
+        expected_first_three = ["00C", "00D", "00J"]
+        expected_count = 34
+        #Check first three PCTs in the list are correct
+        self.assertEqual(result_sorted[:3], expected_first_three,"The first three distinct PCTs should match expected values.")
+        # Check the correct number of PCTs have been identified
+        self.assertEqual(len(result_sorted), expected_count,f"The total number of distinct PCTs should be {expected_count}.")
 if __name__ == "__main__":
     unittest.main()
 
-
+#S2 Tests for the GP practice prescribed items bar chart
 class TestGPPracticeAPI(unittest.TestCase):
     """Test GP Practice API without external dependencies."""
-
     def setUp(self):
         """Set up mock data for testing."""
         # Mock data for GP practices
@@ -70,7 +94,6 @@ class TestGPPracticeAPI(unittest.TestCase):
             {'practice_code': 'A83012', 'practice_name': 'WILLIAM BROWN CENTRE'},
             {'practice_code': 'A83037', 'practice_name': 'BEWICK CRESCENT SURGERY'},
         ]
-
         # Mock data for prescribing
         self.mock_prescribing_data = [
             {'practice': 'P88026', 'BNF_name': 'Lansoprazole_Cap 30mg (E/C Gran)', 'items': 67008},
@@ -84,12 +107,10 @@ class TestGPPracticeAPI(unittest.TestCase):
             {'practice': 'A83012', 'BNF_name': 'Lansoprazole_Cap 30mg (E/C Gran)', 'items': 44458},
             {'practice': 'A83037', 'BNF_name': 'Omeprazole_Cap E/C 20mg', 'items': 42326},
         ]
-
     def test_get_total_gp_practices(self):
         """Test the total number of GP practices."""
         total_gp_practices = len(self.mock_practices)  # Count practices in mock data
         self.assertEqual(total_gp_practices, 10, "Total GP practices should be 10")
-
     def test_get_prescribed_items_per_gp_practice(self):
         """Test the breakdown of prescribed items per GP practice."""
         # Mock logic to calculate prescribed items per practice
@@ -99,27 +120,23 @@ class TestGPPracticeAPI(unittest.TestCase):
             if practice_code not in prescribed_items_per_practice:
                 prescribed_items_per_practice[practice_code] = []
             prescribed_items_per_practice[practice_code].append(entry)
-
         # Assert the correct number of practices have data
         self.assertEqual(len(prescribed_items_per_practice), 10, "Should have 10 practices with prescribed items")
-
         # Assert that each practice has the correct data
         for practice_code, items in prescribed_items_per_practice.items():
             self.assertTrue(all('BNF_name' in item and 'items' in item for item in items),
                             f"All items for practice {practice_code} should have 'BNF_name' and 'items'")
-
         # Check an example breakdown
         example_practice_code = 'P88026'
         example_items = [item for item in self.mock_prescribing_data if item['practice'] == example_practice_code]
         self.assertEqual(len(prescribed_items_per_practice[example_practice_code]), len(example_items),
                          f"Practice {example_practice_code} should have the correct number of prescribed items")
-
 if __name__ == "__main__":
     unittest.main()
 
+#S2: Tests for the antidepressant table
 class TestTopFiveAntidepressants(unittest.TestCase):
     """Test the `get_top_five_antidepressants` method."""
-
     def setUp(self):
         """Set up mock data for testing."""
         # Create a mock database controller
@@ -132,7 +149,6 @@ class TestTopFiveAntidepressants(unittest.TestCase):
             {'BNF_name': 'Drug E', 'BNF_code': '040306', 'items': 70},
             {'BNF_name': 'Drug F', 'BNF_code': '040307', 'items': 60},
         ]
-
     @patch('app.database.controllers.Database.get_top_five_antidepressants')
     def test_get_top_five_antidepressants(self, mock_get_top_five_antidepressants):
         """Test fetching the top 5 antidepressants excluding Amitriptyline."""
@@ -144,11 +160,9 @@ class TestTopFiveAntidepressants(unittest.TestCase):
             {'BNF_name': 'Drug D', 'total_items': 80},
             {'BNF_name': 'Drug E', 'total_items': 70},
         ]
-
         # Call the method
         db_instance = Database()
         result = db_instance.get_top_five_antidepressants()
-
         # Assertions
         self.assertEqual(len(result), 5, "Should return exactly 5 drugs.")
         self.assertNotIn('Amitriptyline', [drug['BNF_name'] for drug in result],
@@ -159,12 +173,7 @@ class TestTopFiveAntidepressants(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-import time
+#S2: Tests for the creatinine calculator
 
 def test_creatinine_calculator():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -194,19 +203,105 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-
-import unittest
 from .calculator import calculateCreatinineClearance
-
 class TestCreatinineClearance(unittest.TestCase):
-
     def test_edge_case_age(self):
         result = calculateCreatinineClearance(age=18, weight=70, creatinine=1.0, sex="male")
         self.assertTrue(result > 0)
-
     def test_invalid_input(self):
         with self.assertRaises(ValueError):
             calculateCreatinineClearance(age=-5, weight=70, creatinine=1.0, sex="male")
-
 if __name__ == '__main__':
+    unittest.main()
+
+#S3: Adding tests for the home route in the Views tab
+class TestHomeRoute(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Set up before running all tests."""
+        # Set SERVER_NAME in Flask config for testing
+        app.config['SERVER_NAME'] = 'localhost'  # You can change this to a proper domain if needed
+        app.config["TESTING"] = True
+        cls.client = app.test_client()
+    def setUp(self):
+        """Set up before each test."""
+        self.app = app
+        self.app_context = self.app.app_context()  # Create an app context
+        self.app_context.push()  # Activate the context
+        self.db_mod = Database()  # Create a new database instance for testing
+    def tearDown(self):
+        """Clean up after each test."""
+        self.app_context.pop()  # Remove the app context
+    def test_home_get_request(self):
+        """Test that the home page loads successfully with a GET request."""
+        response = self.client.get(url_for('dashboard.home'))
+        self.assertEqual(response.status_code, 200, "Home page should load successfully.")
+    def test_home_post_request_with_pct_selection(self):
+        """Test that POST request updates selected PCT correctly."""
+        # Mock get_distinct_pcts return
+        self.db_mod.get_distinct_pcts = lambda: ["00C", "00D", "00J"]
+        response = self.client.post(url_for('dashboard.home'), data={"pct-option": "00D"})
+        self.assertEqual(response.status_code, 200, "Home page should handle POST requests.")
+if __name__ == "__main__":
+    unittest.main()
+
+
+#S3: Testing BMI Calculator - back-end
+from .calculator import calculateBMI
+class TestBMIClearance(unittest.TestCase):
+    def test_positive_output(self):
+        result, _ = calculateBMI(height_cm=160, weight=60)
+        self.assertTrue(result > 0, "BMI should be a positive value.")
+    def test_invalid_inputs(self):
+        with self.assertRaises(ValueError):
+            calculateBMI(height_cm=150, weight=-2)
+        with self.assertRaises(ValueError):
+            calculateBMI(height_cm=-5, weight=80)
+        with self.assertRaises(ValueError):
+            calculateBMI(height_cm=105, weight=1500)
+        with self.assertRaises(ValueError):
+            calculateBMI(height_cm=400, weight=90)
+    def test_example_input_rounding(self):
+        result = calculateBMI(height_cm=171, weight=85)
+        expected_output = (29.07, 'Overweight')
+        self.assertEqual(result, expected_output)
+    def test_edge_case_underweight(self):
+        result, category = calculateBMI(height_cm=151, weight=42)
+        self.assertEqual(category, "Underweight", "Expected category underweight, bmi 18.42.")
+    def test_edge_case_obesity(self):
+        result, category = calculateBMI(height_cm=85, weight=168)
+        self.assertEqual(category, "Obesity", "Expected category obesity, bmi 30.12.")
+if __name__ == '__main__':
+    unittest.main()
+
+#S3 Testing BMI Calculator - front-end
+class TestBMICalculatorUI(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()  # Make sure you have Chromedriver installed
+        self.driver.get("http://127.0.0.1:5000/dashboard/home/")
+    def test_valid_bmi_calculation(self):
+        """Test if the BMI calculator works correctly inside the popup."""
+        driver = self.driver
+        # Ensure popup is visible
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "bmi-calc")))
+        driver.execute_script("document.getElementById('bmi-calc').style.display='block';")
+        # Wait until the inputs become visible
+        WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "height")))
+        WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "weight")))
+        # Enter height and weight values
+        driver.find_element(By.ID, "height").send_keys("170")
+        driver.find_element(By.ID, "weight").send_keys("70")
+        # Locate the 'Calculate' button and click on it
+        calculate_button = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "calculate-bmi"))
+        )
+        driver.execute_script("arguments[0].scrollIntoView();", calculate_button)
+        driver.execute_script("arguments[0].click();", calculate_button)
+        # Wait for the result to be displayed
+        bmi_result = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "bmiResult"))).text
+        # Check if the expected BMI category is in the result
+        self.assertIn("Normal weight", bmi_result, "BMI should be classified correctly.")
+    def tearDown(self):
+        self.driver.quit()
+if __name__ == "__main__":
     unittest.main()

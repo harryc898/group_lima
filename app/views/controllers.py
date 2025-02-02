@@ -40,6 +40,7 @@ def home():
         "tile_data_items": generate_data_for_tiles(),
         #Graph already on dashboard for PCT items
         "top_items_plot_data": generate_top_px_items_barchart_data(),
+        "top_practices_plot_data": generate_top_practices_barchart_data(),
         #pct/practice list, data and selected cells
         "pct_list": pcts,
         "pct_data": selected_pct_data,
@@ -63,9 +64,9 @@ def generate_data_for_tiles():
     tile_data = {
         "total_items": db_mod.get_total_number_items(),
         "total_gp_practices": db_mod.get_total_gp_practices(),
-        "avg_act_cost": None,
+        "avg_act_cost": "{:,.2f}".format(db_mod.get_total_act_cost() / db_mod.get_total_number_items()),
         "top_px_item": None,
-        "num_unique_items": None,
+        "num_unique_items": db_mod.get_unique_items(),
         "total_act_cost": "{:,.2f}".format(db_mod.get_total_act_cost())
     }
     return tile_data

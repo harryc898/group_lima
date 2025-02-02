@@ -13,14 +13,6 @@ from app import db
 from app.database.models import PrescribingData, PracticeData
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
-@database.route('/total_gp_practices', methods=['GET'])
-def get_total_gp_practices():
-    """API endpoint to fetch total number of GP practices."""
-    db_instance = Database()
-    total_practices = db_instance.get_total_gp_practices()
-    return jsonify({"total_gp_practices": total_practices})
-
-
 
 class Database:
     """Class for managing database queries."""
@@ -38,7 +30,11 @@ class Database:
     #Already there: Prescribed items per PCT for graph 1
     def get_prescribed_items_per_pct(self):
         """Return the total items per PCT."""
-        result = db.session.execute(db.select(func.sum(PrescribingData.items).label('item_sum')).group_by(PrescribingData.PCT)).all()
+        result = db.session.execute(
+            db.select(func.sum(PrescribingData.items).label('item_sum'))
+            .group_by(PrescribingData.PCT)
+            .order_by(func.sum(PrescribingData.items).desc())
+        ).all()
         return self.convert_tuple_list_to_raw(result)
 
     def get_prescribed_items_per_gp_practice(self):
@@ -115,6 +111,7 @@ class Database:
         return [{"BNF_name": row[0],"total_items": row[1]}for row in result]
 
 
+
     #Sprint3 t31
     def get_top_pctgp(self):
         """Find PCT with the most GP Practices."""
@@ -132,4 +129,11 @@ class Database:
         distinct_practice_count = result[1] if result else 0
 
         return most_recurring_PCT, distinct_practice_count
+
+
+    #Sprint 3: Task 3 - unique items tile
+    def get_unique_items(self):
+        """Return the total number of unique items"""
+        unique_items = db.session.execute(db.select(func.count(db.distinct(PrescribingData.BNF_code)))).scalar()
+        return(unique_items)
 
