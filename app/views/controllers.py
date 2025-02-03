@@ -105,7 +105,7 @@ def generate_top_practices_barchart_data():
     total_items = []
     most_prescribed_items = []
     for practice_breakdown in data['breakdown']:
-        practices.append(practice_breakdown['practice'])
+        practices.append((practice_breakdown['practice']).title())
         # Get total items for the practice (already provided in 'top_practices')
         total_items.append(next(item[1] for item in data['top_practices'] if item[0] == practice_breakdown['practice']))
         # Get the most prescribed item for each practice
