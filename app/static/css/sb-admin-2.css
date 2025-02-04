@@ -10996,3 +10996,58 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+/* Sidebar Customization */
+.sidebar {
+  background: linear-gradient(180deg, #1d70b8, #a31d5a); /* UCL Colors */
+  color: #fff !important; /* Ensure white text */
+}
+
+/* Button Customization */
+.btn-primary {
+  background-color: #1d70b8 !important; /* UCL Blue */
+  border-color: #1d70b8 !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  background-color: #155a99 !important; /* Darker UCL Blue */
+}
+
+.btn-secondary {
+  background-color: #a31d5a !important; /* UCL Pink */
+  border-color: #a31d5a !important;
+  color: #fff !important;
+}
+
+.btn-secondary:hover {
+  background-color: #8f194d !important; /* Darker UCL Pink */
+}
+
+/* Dark Mode for Body */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Dark Mode for Sidebar */
+.sidebar.dark-mode {
+    background: linear-gradient(180deg, #333333, #444444);
+}
+
+/* Dark Mode for Buttons */
+.btn-primary.dark-mode {
+    background-color: #3333cc;
+    border-color: #3333cc;
+}
+
+.btn-secondary.dark-mode {
+    background-color: #882266;
+    border-color: #882266;
+}
+
+/* Dark Mode for Cards */
+.card.dark-mode {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444444;
+}
