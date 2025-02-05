@@ -14,6 +14,13 @@ function initializeMain()
 {
     popup = Popup();
 }
+document.addEventListener("DOMContentLoaded", function () {
+    // Change the button text to 'Toggle Theme'
+    const darkModeButton = document.getElementById('darkModeToggle');
+    if (darkModeButton) {
+        darkModeButton.innerText = 'Toggle Theme';
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/dbutils/total_gp_practices')
@@ -35,5 +42,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             console.error('Error loading chart data:', error);
         });
+
+function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle('university-theme');
+}
+
+// Add an event listener for the 'Toggle Theme' button
+document.getElementById('darkModeToggle').addEventListener('click', toggleTheme);
 
 });
