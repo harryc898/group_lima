@@ -188,7 +188,7 @@
             <!-- Content Row -->
             <div class="row">
               <!-- Already there: Total items tile -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -205,7 +205,7 @@
               </div>
 
               <!-- Sprint 1: Total GP Practices Tile -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -222,7 +222,7 @@
               </div>
 
               <!-- PCT Summary Tile -->
-              <div class="col-xl-4 col-md-6 mb-4">  <!-- Make the tile wider -->
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">  <!-- Make the tile wider -->
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -241,12 +241,9 @@
                     </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Second Row -->
-            <div class="row">
               <!-- S3, T31: Mean ACT cost tile -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -263,7 +260,7 @@
               </div>
 
               <!-- Sprint 3, Task 3: Unique items tile -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -284,7 +281,7 @@
               </div>
 
               <!-- Sprint 1: Total ACT cost tile -->
-              <div class="col-xl-4 col-md-6 mb-4">
+              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -304,7 +301,7 @@
 
             <!-- Content Row and Column-->
             <div class="row">
-              <div class="col-xl-6 col-md-6 mb-4">
+              <div class="col-lg-6 col-md-12 mb-4">
               <!-- Already there: Graph plotting total items in each PCT -->
                 <div class="card shadow mb-4">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -312,13 +309,13 @@
                   </div>
                   <div class="card-body">
                     <div id="chart" class="chart"></div>
-                    <p>{{dashboard_data.top_items_plot_data.description}}</p>                    
+                    <p>{{dashboard_data.top_items_plot_data.description}}</p>
                   </div>
                 </div>
               </div>
 
               <!-- Content column -->
-                <div class="col-xl-6 col-md-6 mb-4">
+                <div class="col-lg-6 col-md-12 mb-4">
                   <!-- Sprint 2: Prescribed items visualisation-->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -335,7 +332,7 @@
 
             <!-- Content Row and Column-->
               <div class="row">
-                <div class="col-xl-6 col-md-6 mb-4">
+                <div class="col-lg-6 col-md-12 mb-4">
                 <!-- Already there: Table showing BNF data for a selected PCT -->
                   <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -377,7 +374,7 @@
 
 
                 <!-- Content Column -->
-              <div class="col-xl-6 col-lg-12">
+              <div class="col-lg-6 col-md-12 mb-4">
                   <!-- Sprint 2 Task 30 version 2 -->
                   <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -493,7 +490,8 @@
 
                       <button id="calculate-bmi" type="button" onclick="calculateBMI()">Calculate</button>
                     </form>
-                  <p id="bmiResult"></p>
+                    <p id="bmiResult"></p>
+                </div>
               </div>
 
               <script>
@@ -512,19 +510,19 @@
               </script>
 
           <!-- JavaScript Validation Logic -->
-          <script>
-  document.addEventListener('input', function (event) {
-    if (event.target.tagName === 'INPUT' && event.target.type === 'number') {
-      const min = parseInt(event.target.min, 10);
-      const max = parseInt(event.target.max, 10);
-      const value = parseInt(event.target.value, 10);
+              <script>
+                document.addEventListener('input', function (event) {
+                  if (event.target.tagName === 'INPUT' && event.target.type === 'number') {
+                    const min = parseInt(event.target.min, 10);
+                    const max = parseInt(event.target.max, 10);
+                    const value = parseInt(event.target.value, 10);
 
-      if (value < min || value > max) {
-        event.target.value = '';
-      }
-    }
-  });
-</script>
+                    if (value < min || value > max) {
+                      event.target.value = '';
+                    }
+                  }
+                });
+              </script>
 
 
 
