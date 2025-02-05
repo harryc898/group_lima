@@ -45,7 +45,7 @@ function Popup()
 
     popup.showBMICalcFormPopup = function()
     {
-       console.log("BMI Popup function called!"); // Debugging log
+       console.log("BMI Popup function called!");
        this.showMask();
         if (this.bmiCalcPopup) {
         this.bmiCalcPopup.style.display = "block";

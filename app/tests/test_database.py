@@ -285,29 +285,29 @@ if __name__ == '__main__':
 #S3 Testing BMI Calculator - front-end
 class TestBMICalculatorUI(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()  # Make sure you have Chromedriver installed
+        self.driver = webdriver.Chrome()
         self.driver.get("http://127.0.0.1:5000/dashboard/home/")
     def test_valid_bmi_calculation(self):
         """Test if the BMI calculator works correctly inside the popup."""
         driver = self.driver
-        # Ensure popup is visible
+
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "bmi-calc")))
         driver.execute_script("document.getElementById('bmi-calc').style.display='block';")
-        # Wait until the inputs become visible
+
         WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "height")))
         WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "weight")))
-        # Enter height and weight values
+
         driver.find_element(By.ID, "height").send_keys("170")
         driver.find_element(By.ID, "weight").send_keys("70")
-        # Locate the 'Calculate' button and click on it
+
         calculate_button = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "calculate-bmi"))
         )
         driver.execute_script("arguments[0].scrollIntoView();", calculate_button)
         driver.execute_script("arguments[0].click();", calculate_button)
-        # Wait for the result to be displayed
+
         bmi_result = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "bmiResult"))).text
-        # Check if the expected BMI category is in the result
+
         self.assertIn("Normal weight", bmi_result, "BMI should be classified correctly.")
     def tearDown(self):
         self.driver.quit()
