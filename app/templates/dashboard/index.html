@@ -496,6 +496,21 @@
                   <p id="bmiResult"></p>
               </div>
 
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  const weightInput = document.getElementById("weight");
+                  const heightInput = document.getElementById("height");
+                  const bmiResult = document.getElementById("bmiResult");
+
+                function clearBMI() {
+                  bmiResult.innerHTML = ""; // Clear result when input changes
+                }
+
+                weightInput.addEventListener("input", clearBMI);
+                heightInput.addEventListener("input", clearBMI);
+                });
+              </script>
+
           <!-- JavaScript Validation Logic -->
           <script>
   document.addEventListener('input', function (event) {
