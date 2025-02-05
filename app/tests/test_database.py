@@ -36,18 +36,13 @@ class DatabaseTests(unittest.TestCase):
         """Run post each test."""
         # Pop the application context
         self.app_context.pop()
-    def test_get_total_number_items(self):
-        """Test that the total number of items returns the correct value."""
-        self.assertEqual(self.db_mod.get_total_number_items(),8218165,)
-        'Test total items returns correct value'
     def test_get_total_act_cost(self):
         """Test that the total act cost returns the correct value."""
-        self.assertEqual(self.db_mod.get_total_act_cost(),60316449.37000624,)
+        self.assertEqual(self.db_mod.get_total_act_cost(),60316449.37,)
         'Test total act cost returns correct value'
-
+    def test_get_total_number_items(self):
         self.assertEqual(self.db_mod.get_total_number_items(),8218165,)
         'Test total items returns correct value'
-
     def test_avg_act_cost(self):
         """Test that the average act cost returns the correct value."""
         self.assertEqual("{:,.2f}".format(
@@ -57,6 +52,9 @@ class DatabaseTests(unittest.TestCase):
     def test_get_total_number_of_GP_practices(self):
         """Test that the total number of GP practices returns the correct value."""
         self.assertEqual(self.db_mod.get_total_gp_practices(), 9348, 'Test total GP practices returns correct value')
+    def test_get_unique_items(self):
+        """Test that the unique items tile returns the correct value"""
+        self.assertEqual(self.db_mod.get_unique_items(), 13935, 'Test total unique items returns correct value')
     def test_get_prescribed_items_per_pct(self):
         """Test that get_prescribed_items_per_pct returns the correct total items per PCT."""
         # Expected output based on SQL query results (total prescribed items per PCT)
@@ -182,7 +180,6 @@ if __name__ == "__main__":
     unittest.main()
 
 #S2: Tests for the creatinine calculator
-
 def test_creatinine_calculator():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 

@@ -91,7 +91,8 @@ class Database:
     #Sprint 1: Total ACT cost tile
     def get_total_act_cost(self):
         """Return the total ACT cost."""
-        return (db.session.execute(db.select(func.sum(PrescribingData.ACT_cost)))).first()[0]
+        result = db.session.execute(db.select(func.sum(PrescribingData.ACT_cost))).first()[0]
+        return round(result, 2) if result is not None else 0.00
 
     #Sprint 1: Total GP practices tile
     def get_total_gp_practices(self):
