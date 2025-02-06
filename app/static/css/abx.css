@@ -205,3 +205,17 @@ body.dark-mode {
 .university-theme #wrapper {
     background-color: #E7E6E6 !important;  /* University of Manchester light grey */
 }
+/* Change tile border color to University of Manchester purple */
+.university-theme .border-left-primary {
+    border-left: 0.25rem solid #660099 !important;  /* Purple border */
+}
+/* Add shadow effect to tiles */
+.university-theme .card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.3s ease-in-out;
+}
+/* Optional: Add a hover effect for more interaction */
+.university-theme .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1) !important;
+}
