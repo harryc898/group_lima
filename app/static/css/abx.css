@@ -11,6 +11,15 @@
 .text_col_black {
     color: black !important;
 }
+/* Default UCL font style (Helvetica) */
+body {
+    font-family: 'Helvetica', Arial, sans-serif !important;
+}
+
+/* University of Manchester theme font (Open Sans) */
+.university-theme body {
+    font-family: 'Open Sans', sans-serif !important;
+}
 
 #bar-chart{
     width:100%;
@@ -93,6 +102,7 @@
     width:100%;
     padding-left:12px;
 }
+
 /* Sidebar Customization */
 .sidebar {
   background: linear-gradient(180deg, #1d70b8, #a31d5a); /* UCL Colors */
@@ -147,4 +157,65 @@ body.dark-mode {
     background-color: #1e1e1e;
     color: #e0e0e0;
     border: 1px solid #444444;
+}
+
+/* University of Manchester Theme */
+.university-theme {
+    --primary-color: #660099; /* Purple */
+    --secondary-color: #FFCC33; /* Yellow */
+    --accent-color: #999999; /* Grey */
+    --font-family: 'Open Sans', sans-serif;
+}
+
+/* Apply the theme to the whole page */
+.university-theme body {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: var(--font-family);
+}
+
+/* Apply the theme to the sidebar, navbar, and cards */
+.university-theme .navbar, .university-theme .sidebar {
+    background-color: var(--primary-color);
+}
+/* Apply University of Manchester colors to tiles */
+.university-theme .card {
+    background-color: #FFCC33 !important; /* University of Manchester yellow */
+    color: #660099; /* University of Manchester purple for text */
+    border: none; /* Optional: remove borders for a cleaner look */
+}
+
+.university-theme .btn {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+/* Make tile titles purple when the university theme is active */
+.university-theme .card .text-primary {
+    color: #660099 !important; /* University of Manchester purple */
+}
+/* Change dashboard title to University of Manchester purple when theme is active */
+.university-theme .text-gray-800 {
+    color: #660099 !important; /* University of Manchester purple */
+}
+/* Change icon color to University of Manchester purple */
+.university-theme .card .text-gray-300 {
+    color: #660099 !important; /* University of Manchester purple */
+}
+/* Apply background color for the university theme */
+.university-theme #wrapper {
+    background-color: #E7E6E6 !important;  /* University of Manchester light grey */
+}
+/* Change tile border color to University of Manchester purple */
+.university-theme .border-left-primary {
+    border-left: 0.25rem solid #660099 !important;  /* Purple border */
+}
+/* Add shadow effect to tiles */
+.university-theme .card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.3s ease-in-out;
+}
+/* Optional: Add a hover effect for more interaction */
+.university-theme .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1) !important;
 }
