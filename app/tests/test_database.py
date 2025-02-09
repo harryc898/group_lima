@@ -21,6 +21,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from unittest.mock import MagicMock
 
 
 class DatabaseTests(unittest.TestCase):
@@ -225,7 +226,7 @@ class TestHomeRoute(unittest.TestCase):
     def setUpClass(cls):
         """Set up before running all tests."""
         # Set SERVER_NAME in Flask config for testing
-        app.config['SERVER_NAME'] = 'localhost'  # You can change this to a proper domain if needed
+        app.config['SERVER_NAME'] = 'localhost'
         app.config["TESTING"] = True
         cls.client = app.test_client()
     def setUp(self):
@@ -253,7 +254,7 @@ if __name__ == "__main__":
 
 #S3: Testing BMI Calculator - back-end
 from .calculator import calculateBMI
-class TestBMIClearance(unittest.TestCase):
+class TestBMICalculator(unittest.TestCase):
     def test_positive_output(self):
         result, _ = calculateBMI(height_cm=160, weight=60)
         self.assertTrue(result > 0, "BMI should be a positive value.")
@@ -309,4 +310,32 @@ class TestBMICalculatorUI(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 if __name__ == "__main__":
+    unittest.main()
+
+
+class TestPCTSummaryTile(unittest.TestCase):
+    def setUp(self):
+        # Create a mock database session
+        self.mock_session = MagicMock()
+        self.db_mod = Database()  # Initialize the class where get_top_pctgp() is defined
+        self.db_mod.db_session = self.mock_session  # Assign the mock session to your database module
+        self.app_context = app.app_context()
+        self.app_context.push()
+    def tearDown(self):
+        self.app_context.pop()
+    def test_get_top_pctgp(self):
+        """Test the get_top_pctgp method to ensure it returns the correct PCT and practice count."""
+        # Mock the return value of the database query to simulate the expected data
+        mock_result = [
+            ('00T', 61)
+        ]
+        self.mock_session.query().filter().group_by().order_by().first.return_value = mock_result[0]
+        result = self.db_mod.get_top_pctgp()
+        expected_most_recurring_pct = '00T'  # Expected PCT with the most GP Practices
+        expected_distinct_practice_count = 61  # Expected number of distinct practices
+        self.assertEqual(result[0], expected_most_recurring_pct,
+                         f"Expected PCT with most GP Practices to be {expected_most_recurring_pct}, but got {result[0]}.")
+        self.assertEqual(result[1], expected_distinct_practice_count,
+                         f"Expected distinct practice count for PCT {expected_most_recurring_pct} to be {expected_distinct_practice_count}, but got {result[1]}.")
+if __name__ == '__main__':
     unittest.main()
